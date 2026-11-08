@@ -2,6 +2,7 @@ import { Hero } from '@/components/Hero';
 import { Cases } from '@/components/Cases';
 import { FactsStrip } from '@/components/FactsStrip';
 import { Marquee } from '@/components/Marquee';
+import { BioBlock } from '@/components/BioBlock';
 import { ChatInterface } from '@/components/ChatInterface';
 import { AnimateIn } from '@/components/AnimateIn';
 
@@ -17,7 +18,10 @@ export default function Home() {
       {/* 3 — Marquee band */}
       <Marquee />
 
-      {/* 4 — Config-row metrics band */}
+      {/* 5 — Bio block */}
+      <BioBlock />
+
+      {/* 6 — Config-row metrics band */}
       <Cases />
 
       {/* 3 — Live query (chat) */}
