@@ -37,6 +37,14 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <SmoothScroll>
+            <a
+              href="/contact"
+              className="vtab"
+              aria-label="Open to work"
+            >
+              <span className="vtab-dot" aria-hidden="true" />
+              open to work
+            </a>
             <Header />
             <main>{children}</main>
             <Footer />
