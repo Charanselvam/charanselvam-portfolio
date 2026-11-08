@@ -11,51 +11,100 @@ const LINKS = [
 
 const YEAR = 2026;
 
-const Footer = () => {
-  return (
-    <footer
-      className="px-6 sm:px-8 pt-16 pb-10 mt-8 border-t border-foreground/10"
-      style={{ fontFamily: 'var(--font-geist-mono)' }}
+const Footer = () => (
+  <footer
+    style={{
+      background: 'hsl(var(--foreground))',
+      color: 'hsl(var(--background))',
+      overflow: 'hidden',
+      position: 'relative',
+    }}
+  >
+    {/* Upper: invitation + links */}
+    <div
+      className="px-6 sm:px-8 pt-14 pb-10"
+      style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '3rem', alignItems: 'start' }}
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 mb-12">
-        {/* Left: identity */}
-        <div>
-          <p className="text-sm font-semibold text-foreground mb-2" style={{ fontFamily: 'var(--font-geist-sans)', letterSpacing: '-0.01em' }}>
-            Charanselvam S
-          </p>
-          <p className="text-[12px] text-foreground/40 leading-relaxed" style={{ maxWidth: '36ch' }}>
-            AI Integration Engineer · Chennai, India<br />
-            Open to remote · Europe · Singapore
-          </p>
-        </div>
-
-        {/* Right: nav links */}
-        <div className="flex flex-wrap gap-x-6 gap-y-3 sm:justify-end items-start">
-          {LINKS.map(({ label, href, external }) => (
-            <Link
-              key={label}
-              href={href}
-              {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              className="text-[12px] text-foreground/40 hover:text-[var(--amber)] transition-colors"
-              style={{ letterSpacing: '0.04em' }}
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
+      {/* Invitation */}
+      <div>
+        <p
+          className="font-semibold leading-tight"
+          style={{ fontSize: 'clamp(1.5rem, 4vw, 3.5rem)', letterSpacing: '-0.025em', maxWidth: '14ch', color: 'hsl(var(--background))' }}
+        >
+          Open to work. Let&apos;s build something.
+        </p>
+        <a
+          href={`mailto:${PROFILE.email}`}
+          style={{
+            display: 'inline-block',
+            marginTop: '1.5rem',
+            fontFamily: 'var(--font-geist-mono)',
+            fontSize: '13px',
+            letterSpacing: '0.03em',
+            padding: '10px 20px',
+            background: 'var(--amber)',
+            color: 'hsl(30 8% 5%)',
+            textDecoration: 'none',
+          }}
+        >
+          Email me →
+        </a>
       </div>
 
-      {/* Bottom row */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <p className="text-[11px] text-foreground/25" style={{ letterSpacing: '0.04em' }}>
-          © {YEAR} Charanselvam S
-        </p>
-        <p className="text-[11px] text-foreground/25" style={{ letterSpacing: '0.04em' }}>
-          built with Next.js · deployed on Vercel
-        </p>
+      {/* Nav links */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '4px' }}>
+        {LINKS.map(({ label, href, external }) => (
+          <Link
+            key={label}
+            href={href}
+            {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            style={{
+              fontFamily: 'var(--font-geist-mono)',
+              fontSize: '12px',
+              letterSpacing: '0.04em',
+              color: 'hsl(var(--background) / 0.5)',
+              textDecoration: 'none',
+            }}
+            className="hover:text-[var(--amber)] transition-colors"
+          >
+            {label}
+          </Link>
+        ))}
       </div>
-    </footer>
-  );
-};
+    </div>
+
+    {/* Legal line above name */}
+    <div
+      className="px-6 sm:px-8"
+      style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '8px' }}
+    >
+      <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'hsl(var(--background) / 0.3)', letterSpacing: '0.04em' }}>
+        © {YEAR} Charanselvam S
+      </span>
+      <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'hsl(var(--background) / 0.3)', letterSpacing: '0.04em' }}>
+        built with Next.js
+      </span>
+    </div>
+
+    {/* Cropped name — the monument close */}
+    <div
+      aria-hidden="true"
+      style={{
+        fontFamily: 'var(--font-geist-sans)',
+        fontWeight: 700,
+        fontSize: 'clamp(72px, 16vw, 220px)',
+        letterSpacing: '-0.04em',
+        lineHeight: 0.85,
+        whiteSpace: 'nowrap',
+        color: 'hsl(var(--background) / 0.12)',
+        paddingLeft: '24px',
+        transform: 'translateY(28%)',
+        userSelect: 'none',
+      }}
+    >
+      CHARANSELVAM S
+    </div>
+  </footer>
+);
 
 export default Footer;

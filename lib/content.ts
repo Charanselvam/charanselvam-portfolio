@@ -5,6 +5,7 @@ export interface Project {
   tags: string[];
   status?: string;
   link?: string;
+  demoUrl?: string;
   featured?: boolean;
 }
 
@@ -36,6 +37,7 @@ export const PROJECTS: Project[] = [
       'Google Gemini API service that accepts any Excel format regardless of column structure and extracts structured JSON using engineered prompts. Replaced a failing IBM WatsonX implementation; parsing failures dropped from 30% to near zero. Containerised with Docker and deployed to production.',
     tags: ['Python', 'Gemini API', 'Prompt Engineering', 'Docker'],
     status: 'live_in_production',
+    demoUrl: 'https://charanselvam.vercel.app',
     featured: true,
   },
   {

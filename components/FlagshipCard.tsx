@@ -1,4 +1,5 @@
 import type { Project } from '@/lib/content';
+import { DemoStatus } from './DemoStatus';
 
 interface Props {
   project: Project;
@@ -34,17 +35,14 @@ export function FlagshipCard({ project, index }: Props) {
             {project.period}
           </p>
           {project.status === 'live_in_production' && (
-            <span
-              style={{
-                display: 'inline-block',
-                marginTop: '8px',
-                fontFamily: 'var(--font-geist-mono)',
-                fontSize: '11px',
-                letterSpacing: '0.04em',
-                color: '#2fd47a',
-              }}
-            >
-              ● live
+            <span style={{ display: 'block', marginTop: '8px' }}>
+              {project.demoUrl
+                ? <DemoStatus url={project.demoUrl} />
+                : (
+                  <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: '#2fd47a', letterSpacing: '0.04em' }}>
+                    ● live
+                  </span>
+                )}
             </span>
           )}
         </div>
