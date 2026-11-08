@@ -1,5 +1,6 @@
 import { Hero } from '@/components/Hero';
 import { Cases } from '@/components/Cases';
+import { FactsStrip } from '@/components/FactsStrip';
 import { ChatInterface } from '@/components/ChatInterface';
 import { AnimateIn } from '@/components/AnimateIn';
 
@@ -9,7 +10,10 @@ export default function Home() {
       {/* 1 — Type-only hero */}
       <Hero />
 
-      {/* 2 — Config-row metrics band */}
+      {/* 2 — Facts strip */}
+      <FactsStrip />
+
+      {/* 3 — Config-row metrics band */}
       <Cases />
 
       {/* 3 — Live query (chat) */}
