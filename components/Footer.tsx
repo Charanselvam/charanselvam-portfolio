@@ -9,9 +9,9 @@ const LINKS = [
   { label: 'contact', href: '/contact' },
 ];
 
-const Footer = () => {
-  const year = new Date().getFullYear();
+const YEAR = 2026;
 
+const Footer = () => {
   return (
     <footer
       className="px-6 sm:px-8 pt-16 pb-10 mt-8 border-t border-foreground/10"
@@ -48,7 +48,7 @@ const Footer = () => {
       {/* Bottom row */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <p className="text-[11px] text-foreground/25" style={{ letterSpacing: '0.04em' }}>
-          © {year} Charanselvam S
+          © {YEAR} Charanselvam S
         </p>
         <p className="text-[11px] text-foreground/25" style={{ letterSpacing: '0.04em' }}>
           built with Next.js · deployed on Vercel
