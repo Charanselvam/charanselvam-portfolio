@@ -4,6 +4,7 @@ import { FactsStrip } from '@/components/FactsStrip';
 import { Marquee } from '@/components/Marquee';
 import { BioBlock } from '@/components/BioBlock';
 import { FlagshipCard } from '@/components/FlagshipCard';
+import { GlanceBento } from '@/components/GlanceBento';
 import { ChatInterface } from '@/components/ChatInterface';
 import { FLAGSHIPS } from '@/lib/content';
 import { AnimateIn } from '@/components/AnimateIn';
@@ -36,7 +37,10 @@ export default function Home() {
         ))}
       </section>
 
-      {/* 8 — Config-row metrics band */}
+      {/* 8 — Glance bento */}
+      <GlanceBento />
+
+      {/* 9 — Config-row metrics band */}
       <Cases />
 
       {/* 3 — Live query (chat) */}
