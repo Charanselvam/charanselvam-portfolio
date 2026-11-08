@@ -1,6 +1,7 @@
 import { Hero } from '@/components/Hero';
 import { Cases } from '@/components/Cases';
 import { FactsStrip } from '@/components/FactsStrip';
+import { Marquee } from '@/components/Marquee';
 import { ChatInterface } from '@/components/ChatInterface';
 import { AnimateIn } from '@/components/AnimateIn';
 
@@ -13,7 +14,10 @@ export default function Home() {
       {/* 2 — Facts strip */}
       <FactsStrip />
 
-      {/* 3 — Config-row metrics band */}
+      {/* 3 — Marquee band */}
+      <Marquee />
+
+      {/* 4 — Config-row metrics band */}
       <Cases />
 
       {/* 3 — Live query (chat) */}
