@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { Hello } from './Hello';
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -30,6 +31,9 @@ export function Hero() {
     >
       {/* Identity block */}
       <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={0.05}>
+        <div className="mb-3">
+          <Hello />
+        </div>
         <h1
           className="font-semibold text-foreground leading-none"
           style={{ fontSize: 'clamp(1.75rem, 3.5vw, 3rem)', letterSpacing: '-0.02em' }}
