@@ -25,19 +25,42 @@ async function downloadBlob(url: string, filename: string) {
   URL.revokeObjectURL(blobUrl);
 }
 
+const cardStyle = {
+  background: 'var(--surface)',
+  border: '1px solid hsl(var(--foreground)/0.12)',
+  borderRadius: '12px',
+  padding: '14px 16px',
+  marginTop: '12px',
+};
+
 export function ActionCard(props: ActionCardProps) {
   if (props.type === 'resume') {
     return (
-      <div className="mt-3 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between gap-4">
+      <div style={{ ...cardStyle, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
         <div>
-          <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
+          <p className="text-sm font-medium" style={{ color: 'hsl(var(--foreground)/0.85)' }}>
             Resume
           </p>
-          <p className="text-xs text-slate-400">{props.data.filename}</p>
+          <p
+            className="text-xs"
+            style={{ fontFamily: 'var(--font-geist-mono)', color: 'hsl(var(--foreground)/0.35)', marginTop: '2px' }}
+          >
+            {props.data.filename}
+          </p>
         </div>
         <button
           onClick={() => downloadBlob(props.data.url, props.data.filename)}
-          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 transition-colors shrink-0"
+          className="shrink-0 text-xs font-semibold transition-opacity hover:opacity-80"
+          style={{
+            background: 'var(--amber)',
+            color: 'hsl(30 8% 5%)',
+            border: 'none',
+            borderRadius: '8px',
+            padding: '8px 16px',
+            cursor: 'pointer',
+            fontFamily: 'var(--font-geist-mono)',
+            letterSpacing: '0.04em',
+          }}
         >
           Download
         </button>
@@ -46,14 +69,25 @@ export function ActionCard(props: ActionCardProps) {
   }
 
   return (
-    <div className="mt-3 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
-      <p className="text-sm font-medium text-slate-800 dark:text-slate-200 mb-3">
+    <div style={cardStyle}>
+      <p
+        className="text-xs mb-3"
+        style={{ fontFamily: 'var(--font-geist-mono)', color: 'hsl(var(--foreground)/0.4)', letterSpacing: '0.06em', textTransform: 'uppercase' }}
+      >
         Get in touch
       </p>
       <div className="flex flex-wrap gap-2">
         <a
           href={`mailto:${props.data.email}`}
-          className="inline-flex items-center px-4 py-2 bg-slate-900 dark:bg-slate-100 text-slate-50 dark:text-slate-900 text-xs font-semibold rounded-lg hover:opacity-90 transition-opacity"
+          className="inline-flex items-center text-xs font-medium transition-opacity hover:opacity-80"
+          style={{
+            background: 'var(--amber)',
+            color: 'hsl(30 8% 5%)',
+            borderRadius: '8px',
+            padding: '8px 14px',
+            textDecoration: 'none',
+            fontFamily: 'var(--font-geist-mono)',
+          }}
         >
           {props.data.email}
         </a>
@@ -61,7 +95,15 @@ export function ActionCard(props: ActionCardProps) {
           href={props.data.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center px-4 py-2 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-xs font-semibold rounded-lg hover:border-slate-400 transition-colors"
+          className="inline-flex items-center text-xs transition-colors"
+          style={{
+            border: '1px solid hsl(var(--foreground)/0.15)',
+            color: 'hsl(var(--foreground)/0.6)',
+            borderRadius: '8px',
+            padding: '8px 14px',
+            textDecoration: 'none',
+            fontFamily: 'var(--font-geist-mono)',
+          }}
         >
           LinkedIn →
         </a>

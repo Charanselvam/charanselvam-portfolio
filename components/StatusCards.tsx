@@ -2,9 +2,9 @@ import { NOW } from '@/lib/content';
 
 export function StatusCards() {
   return (
-    <section className="px-6 sm:px-8 py-14 border-t border-foreground/10">
+    <section className="px-6 sm:px-8 py-14">
       <p
-        className="text-[11px] text-foreground/40 uppercase tracking-widest mb-8"
+        className="text-[13px] text-foreground/40 uppercase tracking-widest mb-8"
         style={{ fontFamily: 'var(--font-geist-mono)' }}
       >
         Now
@@ -22,7 +22,7 @@ export function StatusCards() {
             <span
               style={{
                 fontFamily: 'var(--font-geist-mono)',
-                fontSize: '11px',
+                fontSize: '13px',
                 letterSpacing: '0.08em',
                 color: 'var(--amber)',
                 display: 'block',

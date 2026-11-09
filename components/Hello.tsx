@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 const WORDS = [
-  ['hello', 'en'], ['நமஸ்காரம்', 'ta'], ['hola', 'es'],
+  ['hello', 'en'], ['வணக்கம்', 'ta'], ['hola', 'es'],
   ['bonjour', 'fr'], ['こんにちは', 'ja'], ['ciao', 'it'],
   ['hallo', 'de'], ['olá', 'pt'], ['你好', 'zh'], ['안녕하세요', 'ko'],
 ] as const;
@@ -29,9 +29,10 @@ export function Hello(): React.JSX.Element {
   return (
     <span
       style={{
-        fontFamily: 'var(--font-geist-mono)',
-        fontSize: 'clamp(1rem, 1.5vw, 1.25rem)',
-        color: 'var(--amber)',
+        fontFamily: 'var(--font-geist-sans)',
+        fontSize: 'clamp(1.4rem, 2.6vw, 2.4rem)',
+        fontStyle: 'italic',
+        color: 'hsl(var(--foreground) / 0.9)',
         display: 'inline-block',
       }}
     >
@@ -40,7 +41,7 @@ export function Hello(): React.JSX.Element {
         aria-hidden="true"
         key={idx}
         lang={lang}
-        className="anim-fade-in inline-block"
+        style={{ display: 'inline-block', opacity: 1, transition: 'opacity 0.3s ease' }}
       >
         {word}
       </span>

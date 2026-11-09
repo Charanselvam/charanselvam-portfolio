@@ -16,7 +16,15 @@ export function MessageBubble({ message }: { message: UIMessage }) {
       .join('');
     return (
       <div className="flex justify-end mb-4">
-        <div className="max-w-[80%] px-4 py-2.5 rounded-2xl bg-slate-900 dark:bg-slate-100 text-slate-50 dark:text-slate-900 text-sm leading-relaxed">
+        <div
+          className="max-w-[80%] px-4 py-2.5 text-sm leading-relaxed"
+          style={{
+            background: 'hsl(var(--foreground)/0.07)',
+            border: '1px solid hsl(var(--foreground)/0.1)',
+            borderRadius: '16px 16px 4px 16px',
+            color: 'hsl(var(--foreground)/0.85)',
+          }}
+        >
           {text}
         </div>
       </div>
@@ -24,11 +32,25 @@ export function MessageBubble({ message }: { message: UIMessage }) {
   }
 
   return (
-    <div className="mb-6 flex gap-3">
-      <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center shrink-0 mt-0.5">
-        <span className="text-white text-xs font-semibold">C</span>
+    <div className="mb-5 flex gap-3">
+      {/* Avatar */}
+      <div
+        className="shrink-0 mt-0.5 flex items-center justify-center"
+        style={{
+          width: '26px',
+          height: '26px',
+          borderRadius: '50%',
+          border: '1px solid hsl(var(--foreground)/0.2)',
+          fontFamily: 'var(--font-geist-mono)',
+          fontSize: '9px',
+          letterSpacing: '0.05em',
+          color: 'var(--amber)',
+        }}
+      >
+        CS
       </div>
-      <div className="flex-1 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+
+      <div className="flex-1 text-sm leading-relaxed" style={{ color: 'hsl(var(--foreground)/0.75)' }}>
         {message.parts.map((part, i) => {
           if (part.type === 'text') {
             const textPart = part as { type: 'text'; text: string };
@@ -37,11 +59,24 @@ export function MessageBubble({ message }: { message: UIMessage }) {
                 key={i}
                 components={{
                   p: ({ children }) => <p className="mb-2">{children}</p>,
-                  strong: ({ children }) => <strong className="font-semibold text-slate-900 dark:text-slate-100">{children}</strong>,
+                  strong: ({ children }) => (
+                    <strong style={{ fontWeight: 600, color: 'hsl(var(--foreground)/0.9)' }}>{children}</strong>
+                  ),
                   ul: ({ children }) => <ul className="mb-2 ml-4 list-disc space-y-1">{children}</ul>,
                   ol: ({ children }) => <ol className="mb-2 ml-4 list-decimal space-y-1">{children}</ol>,
                   li: ({ children }) => <li>{children}</li>,
-                  code: ({ children }) => <code className="px-1 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-xs font-mono">{children}</code>,
+                  code: ({ children }) => (
+                    <code
+                      className="px-1 py-0.5 rounded text-xs"
+                      style={{
+                        background: 'hsl(var(--foreground)/0.07)',
+                        fontFamily: 'var(--font-geist-mono)',
+                        color: 'var(--amber)',
+                      }}
+                    >
+                      {children}
+                    </code>
+                  ),
                 }}
               >
                 {textPart.text}

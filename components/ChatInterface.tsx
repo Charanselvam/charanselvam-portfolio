@@ -49,7 +49,7 @@ export function ChatInterface() {
         className="text-[13px] text-[var(--amber)] mb-8 tracking-[0.05em]"
         style={{ fontFamily: 'var(--font-geist-mono)' }}
       >
-        live_query — ask about any system above
+        live_query · ask about any system above
       </p>
 
       <div className="flex-1 space-y-3">

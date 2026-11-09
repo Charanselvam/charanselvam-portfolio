@@ -3,7 +3,7 @@ import { PROFILE } from '@/lib/content';
 
 export function BioBlock() {
   return (
-    <section className="px-6 sm:px-8 py-16 border-t border-foreground/10">
+    <section className="px-6 sm:px-8 py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* Photo */}
         <div
@@ -17,13 +17,12 @@ export function BioBlock() {
             sizes="(max-width: 768px) 100vw, 420px"
             priority
           />
-          <span className="img-caption">{PROFILE.sticker}</span>
         </div>
 
         {/* Text */}
         <div>
           <p
-            className="text-[11px] text-foreground/40 uppercase tracking-widest mb-4"
+            className="text-[13px] text-foreground/40 uppercase tracking-widest mb-4"
             style={{ fontFamily: 'var(--font-geist-mono)' }}
           >
             About
@@ -32,17 +31,16 @@ export function BioBlock() {
             className="font-semibold text-foreground leading-tight mb-6"
             style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', letterSpacing: '-0.02em' }}
           >
-            Five years at the intersection of enterprise and AI.
+            Agents, pipelines, and APIs for systems that actually run.
           </h2>
           <p className="text-foreground/65 leading-relaxed mb-4" style={{ maxWidth: '52ch' }}>
             {PROFILE.bio}
           </p>
           <p className="text-foreground/65 leading-relaxed mb-8" style={{ maxWidth: '52ch' }}>
-            I&apos;ve shipped AI tooling that removed weeks of manual work per quarter — from a Gemini-powered Excel
-            extractor that replaced a failing IBM WatsonX integration, to a fully local RAG chatbot, to a JSONata-based
-            carrier mapping engine that cut onboarding from days to hours.
+            Enterprise Java background means I can drop an agentic workflow or MCP server into a legacy system
+            without rebuilding it. API-first, pipeline-driven, production-proven.
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-6">
             <a
               href={PROFILE.github}
               target="_blank"
@@ -51,13 +49,11 @@ export function BioBlock() {
                 fontFamily: 'var(--font-geist-mono)',
                 fontSize: '13px',
                 letterSpacing: '0.03em',
-                padding: '8px 16px',
-                border: '1px solid var(--amber)',
                 color: 'var(--amber)',
                 textDecoration: 'none',
-                transition: 'background 0.2s, color 0.2s',
+                transition: 'opacity 0.2s',
               }}
-              className="hover:bg-[var(--amber)] hover:text-background"
+              className="hover:opacity-70"
             >
               GitHub ↗
             </a>
@@ -69,13 +65,11 @@ export function BioBlock() {
                 fontFamily: 'var(--font-geist-mono)',
                 fontSize: '13px',
                 letterSpacing: '0.03em',
-                padding: '8px 16px',
-                border: '1px solid hsl(var(--border))',
-                color: 'hsl(var(--muted-foreground))',
+                color: 'hsl(var(--foreground) / 0.5)',
                 textDecoration: 'none',
-                transition: 'border-color 0.2s, color 0.2s',
+                transition: 'color 0.2s',
               }}
-              className="hover:border-[var(--amber)] hover:text-[var(--amber)]"
+              className="hover:text-[var(--amber)]"
             >
               LinkedIn ↗
             </a>

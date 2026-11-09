@@ -5,7 +5,7 @@ const PROMPTS = [
   'What was wrong with the IBM WatsonX setup?',
   'Walk me through the payment bug.',
   'What would you build at a company still on legacy?',
-  'Are you open to remote roles in Europe?',
+  'Are you open to fully remote roles?',
 ];
 
 export function PromptChips({ onSelect }: { onSelect: (prompt: string) => void }) {

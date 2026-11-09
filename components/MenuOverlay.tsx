@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { PROFILE } from '@/lib/content';
 
@@ -12,19 +12,55 @@ const NAV = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
+  { href: '/ai', label: 'Ask AI' },
 ];
 
+const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function MenuOverlay({ open, onClose }: Props) {
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  // Lock scroll
   useEffect(() => {
-    if (open) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = '';
+    document.body.style.overflow = open ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [open]);
+
+  // Focus trap + Escape
+  useEffect(() => {
+    if (!open) return;
+    closeRef.current?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key !== 'Tab') return;
+
+      const overlay = overlayRef.current;
+      if (!overlay) return;
+      const nodes = Array.from(overlay.querySelectorAll<HTMLElement>(FOCUSABLE));
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [open, onClose]);
 
   if (!open) return null;
 
   return (
     <div
+      ref={overlayRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Navigation menu"
       style={{
         position: 'fixed',
         inset: 0,
@@ -51,7 +87,9 @@ export function MenuOverlay({ open, onClose }: Props) {
           CS
         </Link>
         <button
+          ref={closeRef}
           onClick={onClose}
+          aria-label="Close menu"
           style={{
             fontFamily: 'var(--font-geist-mono)',
             fontSize: '13px',
@@ -68,7 +106,7 @@ export function MenuOverlay({ open, onClose }: Props) {
       </div>
 
       {/* Nav links */}
-      <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '2rem' }}>
+      <nav aria-label="Main navigation" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '2rem' }}>
         {NAV.map(({ href, label }) => (
           <Link
             key={href}
@@ -96,7 +134,8 @@ export function MenuOverlay({ open, onClose }: Props) {
           href={PROFILE.github}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '12px', color: 'hsl(var(--muted-foreground))', textDecoration: 'none' }}
+          aria-label="GitHub profile (opens in new tab)"
+          style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '13px', color: 'hsl(var(--muted-foreground))', textDecoration: 'none' }}
           className="hover:text-[var(--amber)]"
         >
           GitHub
@@ -105,7 +144,8 @@ export function MenuOverlay({ open, onClose }: Props) {
           href={PROFILE.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '12px', color: 'hsl(var(--muted-foreground))', textDecoration: 'none' }}
+          aria-label="LinkedIn profile (opens in new tab)"
+          style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '13px', color: 'hsl(var(--muted-foreground))', textDecoration: 'none' }}
           className="hover:text-[var(--amber)]"
         >
           LinkedIn

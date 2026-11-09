@@ -6,7 +6,7 @@ export function AboutStory() {
       <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-16">
         <div>
           <p
-            className="text-[11px] text-foreground/40 uppercase tracking-widest"
+            className="text-[13px] text-foreground/40 uppercase tracking-widest"
             style={{ fontFamily: 'var(--font-geist-mono)' }}
           >
             Story
@@ -21,7 +21,7 @@ export function AboutStory() {
           </h1>
           <div className="space-y-5 text-foreground/65 leading-relaxed" style={{ maxWidth: '58ch' }}>
             <p>
-              I started as a Java developer inside an enterprise insurance PAS — the kind of system
+              I started as a Java developer inside an enterprise insurance PAS: the kind of system
               where every deploy touches policy data for real customers across multiple states.
               Five years of shipping in that environment teaches you to care about correctness first.
             </p>
@@ -33,7 +33,7 @@ export function AboutStory() {
               cut carrier onboarding from days to hours.
             </p>
             <p>
-              Today I work at the junction of enterprise reliability and AI capability — helping
+              Today I work at the junction of enterprise reliability and AI capability, helping
               systems that weren&apos;t built for AI become meaningfully better with it.
             </p>
           </div>

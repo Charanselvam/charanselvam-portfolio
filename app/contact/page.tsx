@@ -2,8 +2,8 @@ import { ContactForm } from '@/components/ContactForm';
 import { PROFILE } from '@/lib/content';
 
 export const metadata = {
-  title: 'Contact — Charanselvam S',
-  description: 'Get in touch with Charanselvam S — AI Integration Engineer open to remote roles in Europe and Singapore.',
+  title: 'Contact | Charanselvam S',
+  description: 'Get in touch with Charanselvam S, AI Integration Engineer open to remote and relocation.',
 };
 
 export default function ContactPage() {
@@ -13,7 +13,7 @@ export default function ContactPage() {
         {/* Left: intro */}
         <div>
           <p
-            className="text-[11px] text-foreground/40 uppercase tracking-widest mb-4"
+            className="text-[13px] text-foreground/40 uppercase tracking-widest mb-4"
             style={{ fontFamily: 'var(--font-geist-mono)' }}
           >
             Contact
@@ -25,7 +25,7 @@ export default function ContactPage() {
             Let&apos;s work together.
           </h1>
           <p className="text-sm text-foreground/60 leading-relaxed mb-8" style={{ maxWidth: '36ch' }}>
-            Open to fully remote roles in Europe and Singapore. Available immediately.
+            Open to remote or relocation. Available immediately.
             Drop me a note or reach out on the channels below.
           </p>
           <div className="space-y-3">

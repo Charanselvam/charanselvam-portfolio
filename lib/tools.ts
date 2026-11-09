@@ -14,14 +14,14 @@ const PROJECTS = [
     title: 'PDF RAG Chatbot',
     period: '2024 – 2025',
     description:
-      'Chat with any uploaded PDF using a local LLM. Built with Python, LangChain, ChromaDB, HuggingFace embeddings, and Ollama. Implements hallucination prevention via retrieval-augmented generation. Fully local inference — no external API calls.',
+      'Chat with any uploaded PDF using a local LLM. Built with Python, LangChain, ChromaDB, HuggingFace embeddings, and Ollama. Implements hallucination prevention via retrieval-augmented generation. Fully local inference, no external API calls.',
     tags: ['Python', 'LangChain', 'ChromaDB', 'Ollama', 'RAG', 'HuggingFace'],
   },
   {
     title: 'Carrier Mapping Tool with AI Assist',
     period: '2025 – 2026',
     description:
-      'Replaced AtlasMap with a JSONata-based mapping engine — reducing new carrier onboarding from days to hours. Features a Monaco-based JSONata editor with an AI-assist panel (Ollama) for Suggest, Explain, and Fix actions.',
+      'Replaced AtlasMap with a JSONata-based mapping engine, reducing new carrier onboarding from days to hours. Features a Monaco-based JSONata editor with an AI-assist panel (Ollama) for Suggest, Explain, and Fix actions.',
     tags: ['Python', 'JSONata', 'Monaco Editor', 'Ollama', 'MySQL', 'React'],
   },
   {

@@ -1,105 +1,74 @@
-import { NOW, STATS } from '@/lib/content';
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { STATS } from '@/lib/content';
+
+function CountUp({ to, suffix }: { to: number; suffix: string }) {
+  const [value, setValue] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const dur = 1200;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const t = Math.min(1, (now - start) / dur);
+            const eased = 1 - Math.pow(1 - t, 3);
+            setValue(Math.round(eased * to));
+            if (t < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [to]);
+
+  return (
+    <p
+      ref={ref}
+      className="font-semibold text-foreground"
+      style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', letterSpacing: '-0.04em', lineHeight: 1 }}
+    >
+      {value}{suffix}
+    </p>
+  );
+}
 
 export function GlanceBento() {
   const statRows = [
-    { label: 'Years of experience', value: `${STATS.yearsExperience}+` },
-    { label: 'Carriers integrated', value: STATS.carriersIntegrated },
-    { label: 'AI projects in production', value: STATS.aiProjectsInProduction },
-    { label: 'OCI certifications', value: STATS.certifications },
+    { label: 'Years of experience', to: STATS.yearsExperience, suffix: '+' },
+    { label: 'Integrations live', to: STATS.carriersIntegrated, suffix: '' },
+    { label: 'AI projects in production', to: STATS.aiProjectsInProduction, suffix: '' },
+    { label: 'OCI certifications', to: STATS.certifications, suffix: '' },
   ];
 
   return (
-    <section className="px-6 sm:px-8 py-16 border-t border-foreground/10">
-      <p
-        className="text-[11px] text-foreground/40 uppercase tracking-widest mb-10"
-        style={{ fontFamily: 'var(--font-geist-mono)' }}
-      >
-        At a glance
-      </p>
+    <section className="px-6 sm:px-8 pt-16 pb-4">
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* NOW block */}
-        <div
-          style={{
-            background: 'var(--surface)',
-            padding: '2rem',
-            borderRadius: '2px',
-          }}
-        >
-          <p
-            className="text-[11px] text-foreground/40 uppercase tracking-widest mb-6"
-            style={{ fontFamily: 'var(--font-geist-mono)' }}
-          >
-            Now
-          </p>
-          <div className="space-y-5">
-            {NOW.map(({ key, text, link }) => (
-              <div key={key}>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-geist-mono)',
-                    fontSize: '11px',
-                    letterSpacing: '0.08em',
-                    color: 'var(--amber)',
-                    display: 'block',
-                    marginBottom: '4px',
-                  }}
-                >
-                  {key}
-                </span>
-                <p className="text-sm text-foreground/70 leading-relaxed">
-                  {text}
-                  {link && (
-                    <>
-                      {' '}
-                      <a
-                        href={link[0]}
-                        style={{ color: 'var(--amber)', textDecoration: 'underline' }}
-                      >
-                        {link[1]}
-                      </a>
-                    </>
-                  )}
-                </p>
-              </div>
-            ))}
+      {/* Stats row */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
+        {statRows.map(({ label, to, suffix }) => (
+          <div key={label}>
+            <CountUp to={to} suffix={suffix} />
+            <p
+              className="text-foreground/55 mt-2"
+              style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '13px', letterSpacing: '0.06em' }}
+            >
+              {label}
+            </p>
           </div>
-        </div>
-
-        {/* Stats block */}
-        <div
-          style={{
-            background: 'var(--surface)',
-            padding: '2rem',
-            borderRadius: '2px',
-          }}
-        >
-          <p
-            className="text-[11px] text-foreground/40 uppercase tracking-widest mb-6"
-            style={{ fontFamily: 'var(--font-geist-mono)' }}
-          >
-            Numbers
-          </p>
-          <div className="grid grid-cols-2 gap-6">
-            {statRows.map(({ label, value }) => (
-              <div key={label}>
-                <p
-                  className="font-semibold text-foreground"
-                  style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.03em', lineHeight: 1 }}
-                >
-                  {value}
-                </p>
-                <p
-                  className="text-foreground/40 mt-1"
-                  style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', letterSpacing: '0.04em' }}
-                >
-                  {label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
+        ))}
       </div>
+
     </section>
   );
 }

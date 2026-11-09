@@ -1,17 +1,15 @@
-import { AnimateIn } from './AnimateIn';
-
 const CONFIG_ROWS = [
   {
     key: 'carrier_onboarding.duration',
     value: 'days → hours',
     proof:
-      "Adding a new insurance carrier meant weeks of custom integration work. Built a config-driven framework — zero hardcoded carrier logic, everything in three config tables. Four carriers onboarded. Now it's hours.",
+      "Adding a new insurance carrier meant weeks of custom integration work. Built a config-driven framework: zero hardcoded carrier logic, everything in three config tables. Four carriers onboarded. Now it's hours.",
   },
   {
     key: 'doc_parse.failure_rate',
     value: '30% → near zero',
     proof:
-      'Document parser was failing on 30% of submissions — every client sent Excel files in a different format. Replaced the failing IBM WatsonX implementation with a Gemini API service using engineered prompts. Live in production.',
+      'Document parser was failing on 30% of submissions. Every client sent Excel files in a different format. Replaced the failing IBM WatsonX implementation with a Gemini API service using engineered prompts. Live in production.',
   },
   {
     key: 'policy_tx.silent_failures',
@@ -30,13 +28,7 @@ export function Cases() {
       <h2 className="sr-only">Outcomes</h2>
 
       {CONFIG_ROWS.map((row, i) => (
-        <AnimateIn key={row.key} delay={i * 120}>
-          {i > 0 && (
-            <div
-              className="w-full"
-              style={{ height: '2px', background: 'hsl(var(--foreground) / 0.25)' }}
-            />
-          )}
+        <div key={row.key}>
           <div className="py-10 sm:py-14 grid grid-cols-1 sm:grid-cols-[2fr_3fr] gap-6 sm:gap-12 items-start">
             <p
               className="text-sm text-foreground/65 pt-1 tracking-wide"
@@ -59,7 +51,7 @@ export function Cases() {
               </p>
             </div>
           </div>
-        </AnimateIn>
+        </div>
       ))}
     </section>
   );

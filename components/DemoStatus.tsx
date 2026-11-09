@@ -28,7 +28,7 @@ export function DemoStatus({ url }: { url: string }) {
         alignItems: 'center',
         gap: '5px',
         fontFamily: 'var(--font-geist-mono)',
-        fontSize: '11px',
+        fontSize: '13px',
         letterSpacing: '0.04em',
         color: state === 'live' ? '#2fd47a' : 'hsl(var(--muted-foreground))',
       }}

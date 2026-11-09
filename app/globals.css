@@ -57,6 +57,11 @@
   --amber-light: hsl(38 80% 55%);
   --surface:  hsl(38 20% 92%);
   --line:     hsl(35 12% 82%);
+
+  /* Canvas-specific raw HSL triplets (no hsl() wrapper) */
+  --cv-bg: 38 25% 97%;
+  --cv-accent: 38 80% 45%;
+  --cv-edge: 30 8% 42%;
 }
 
 .dark {
@@ -84,6 +89,11 @@
   --amber-light: hsl(38 80% 65%);
   --surface:  hsl(30 8% 10%);
   --line:     hsl(30 6% 16%);
+
+  /* Canvas-specific raw HSL triplets */
+  --cv-bg: 30 8% 5%;
+  --cv-accent: 38 80% 55%;
+  --cv-edge: 35 15% 45%;
 }
 
 /* ─── Base styles ─── */
@@ -200,37 +210,156 @@ body::after {
 /* ─── Marquee animation ─── */
 @keyframes marq { to { transform: translateX(-50%); } }
 
-/* ─── Availability vtab ─── */
-.vtab {
-  position: fixed;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%) rotate(-90deg);
-  transform-origin: left center;
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: hsl(var(--muted-foreground));
-  padding: 6px 12px;
-  border: 1px solid hsl(var(--border));
-  background: hsl(var(--background));
-  text-decoration: none;
-  white-space: nowrap;
-  z-index: 10;
-  transition: color 0.2s;
+/* ─── Hero dot-grid background ─── */
+.hero-dots {
+  background-image: none;
 }
-.vtab:hover { color: var(--amber); }
-.vtab-dot {
+
+
+/* ─── Scroll-reveal (.rv) ─── */
+@supports (animation-timeline: view()) {
+  .rv {
+    animation: port-rv linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 45%;
+  }
+  @keyframes port-rv {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+
+/* ─── Spin ─── */
+@keyframes port-spin { to { transform: rotate(360deg); } }
+.spin {
+  animation: port-spin var(--dur, 18s) linear infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.spin.rev { animation-direction: reverse; }
+
+/* ─── Blinking dot ─── */
+@keyframes port-blink { 0%, 100% { opacity: 0.3; } 40% { opacity: 1; } }
+.blink-dot {
+  animation: port-blink 1.6s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+/* ─── Animated dashed stroke (class on svg, targets its path children) ─── */
+@keyframes port-dash { to { stroke-dashoffset: -12; } }
+.dash path { animation: port-dash 0.9s linear infinite; }
+
+/* ─── Cursor spotlight — removed (gradient FAIL fix) ─── */
+.spot { display: none; }
+
+/* ─── Flag card ─── */
+.flag-card .card-motif * { animation-play-state: paused; }
+.flag-card:hover .card-motif * { animation-play-state: running; }
+.flag-card { transition: border-color 0.3s, transform 0.5s cubic-bezier(0.16,1,0.3,1); position: relative; }
+.flag-card:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--amber) 55%, hsl(var(--border))); }
+
+/* ─── Count-up animation (CSS Houdini, Chrome/Safari 16.4+) ─── */
+@property --n { syntax: '<integer>'; inherits: false; initial-value: 0; }
+@keyframes port-count { to { --n: var(--to, 0); } }
+.count-num {
+  counter-reset: n var(--n);
+  animation: port-count 1.4s cubic-bezier(.16,1,.3,1) .4s forwards;
+}
+.count-num::before { content: counter(n); }
+@supports (animation-timeline: view()) {
+  .count-num {
+    animation-timeline: view();
+    animation-range: entry 15% cover 40%;
+    animation-delay: 0s;
+    animation-duration: auto;
+    animation-timing-function: ease-out;
+  }
+}
+
+/* ─── NowRadar ─── */
+.nowr-live {
   display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 7px; height: 7px;
   border-radius: 50%;
-  background: #2fd47a;
-  margin-right: 6px;
+  background: var(--amber);
+  margin-right: 8px;
+  animation: amber-blink 2s ease-in-out infinite;
   vertical-align: middle;
+}
+
+
+/* ─── Letter stagger reveal ─── */
+.ltr {
+  display: inline-block;
+  animation: port-rv 0.55s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 0.045s + 0.05s);
+}
+
+/* ─── Page hero (inner pages with canvas backdrop) ─── */
+.page-hero {
+  position: relative;
+  overflow: hidden;
+}
+.page-hero-canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0.45;
+}
+.page-hero-content { position: relative; z-index: 1; }
+
+/* ─── Next-page navigation row ─── */
+.next-page-nav {
+  display: block;
+  padding: 64px 32px;
+  text-decoration: none;
+  color: hsl(var(--foreground));
+  transition: color 0.3s ease, padding-left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.next-page-nav:hover { color: var(--amber); padding-left: 56px; }
+.next-page-label {
+  display: block;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--foreground) / 0.38);
+  margin-bottom: 14px;
+}
+.next-page-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.next-page-title {
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-family: var(--font-geist-sans), ui-sans-serif, sans-serif;
+}
+.next-page-arrow {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+.next-page-nav:hover .next-page-arrow {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: hsl(30 8% 5%);
 }
 
 /* ─── Reduced motion ─── */
 @media (prefers-reduced-motion: reduce) {
   .img-panel img { transition: none; }
+  .spin, .blink-dot, .dash path, .count-num { animation: none !important; }
+  .rv, .ltr { opacity: 1 !important; transform: none !important; animation: none !important; }
 }
