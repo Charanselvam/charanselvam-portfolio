@@ -1,9 +1,8 @@
-'use client';
-
 export function PrintButton() {
   return (
-    <button
-      onClick={() => window.print()}
+    <a
+      href="/resume.pdf"
+      download="Charanselvam_S_Resume.pdf"
       style={{
         fontFamily: 'var(--font-geist-mono)',
         fontSize: '13px',
@@ -11,16 +10,15 @@ export function PrintButton() {
         padding: '12px 24px',
         background: 'var(--amber)',
         color: 'hsl(30 8% 5%)',
-        border: 'none',
         borderRadius: '999px',
-        cursor: 'pointer',
         fontWeight: 700,
+        textDecoration: 'none',
         display: 'inline-flex',
         alignItems: 'center',
         gap: '6px',
       }}
     >
       Download PDF ↓
-    </button>
+    </a>
   );
 }
