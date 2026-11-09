@@ -1,7 +1,10 @@
 'use client';
 
+'use client';
+
 import React, { useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ModeToggle } from './ModeToggle';
 import { MenuOverlay } from './MenuOverlay';
 
@@ -61,13 +64,39 @@ function ScrambleMark() {
   );
 }
 
+const NAV_LINKS = [
+  { href: '/work', label: 'Work' },
+  { href: '/resume', label: 'Résumé' },
+];
+
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <>
       <header className="flex items-center justify-between px-6 sm:px-8 py-6">
         <ScrambleMark />
+
+        <nav className="hidden sm:flex items-center gap-6">
+          {NAV_LINKS.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              style={{
+                fontFamily: 'var(--font-geist-mono)',
+                fontSize: '13px',
+                letterSpacing: '0.04em',
+                color: pathname === href ? 'var(--amber)' : 'hsl(var(--muted-foreground))',
+                textDecoration: 'none',
+                transition: 'color 0.15s',
+              }}
+              className="hover:text-[var(--amber)]"
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
 
         <div className="flex items-center gap-5">
           <ModeToggle />

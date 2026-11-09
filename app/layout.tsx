@@ -7,6 +7,7 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { ChatFAB } from "@/components/ChatFAB";
 import { ThemeProvider } from "next-themes";
 import { ChatProvider } from "@/context/ChatContext";
+import { PageTransition } from "@/components/PageTransition";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -63,7 +64,9 @@ export default function RootLayout({
           <ChatProvider>
             <SmoothScroll>
               <Header />
-              <main id="main-content">{children}</main>
+              <main id="main-content">
+              <PageTransition>{children}</PageTransition>
+            </main>
               <Footer />
               <ChatFAB />
             </SmoothScroll>
