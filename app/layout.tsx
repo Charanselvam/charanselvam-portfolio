@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { ChatFAB } from "@/components/ChatFAB";
 import { ThemeProvider } from "next-themes";
+import { ChatProvider } from "@/context/ChatContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -59,12 +60,14 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-          <SmoothScroll>
-            <Header />
-            <main id="main-content">{children}</main>
-            <Footer />
-            <ChatFAB />
-          </SmoothScroll>
+          <ChatProvider>
+            <SmoothScroll>
+              <Header />
+              <main id="main-content">{children}</main>
+              <Footer />
+              <ChatFAB />
+            </SmoothScroll>
+          </ChatProvider>
         </ThemeProvider>
       </body>
     </html>

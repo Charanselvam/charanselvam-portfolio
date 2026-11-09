@@ -1,28 +1,32 @@
 'use client';
 
-import { useChat } from '@ai-sdk/react';
-import { DefaultChatTransport } from 'ai';
 import { useEffect, useRef, useState } from 'react';
+import { useChatCtx } from '@/context/ChatContext';
 import { MessageBubble } from './MessageBubble';
 import { PromptChips } from './PromptChips';
 
+const STAGES = ['Reading the portfolio', 'Thinking', 'Composing reply'];
 
 export function ChatInterface() {
-  const { messages, sendMessage, status } = useChat({
-    transport: new DefaultChatTransport({ api: '/api/chat' }),
-  });
-
+  const { messages, sendMessage, status } = useChatCtx();
   const [input, setInput] = useState('');
+  const [stageIdx, setStageIdx] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const isLoading = status === 'submitted' || status === 'streaming';
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const hasUserMessage = messages.length > 0;
+  const isLoading = status === 'submitted' || status === 'streaming';
+  const hasMessages = messages.length > 0;
+
+  // Cycle loading stage text while waiting
+  useEffect(() => {
+    if (!isLoading) { setStageIdx(0); return; }
+    const id = setInterval(() => setStageIdx((s) => Math.min(STAGES.length - 1, s + 1)), 1500);
+    return () => clearInterval(id);
+  }, [isLoading]);
 
   useEffect(() => {
-    if (messages.length > 0) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages]);
+    if (hasMessages) messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, hasMessages, isLoading]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -32,7 +36,8 @@ export function ChatInterface() {
     await sendMessage({ text });
   }
 
-  async function handlePromptSelect(prompt: string) {
+  async function handleChipSelect(prompt: string) {
+    if (isLoading) return;
     await sendMessage({ text: prompt });
   }
 
@@ -45,63 +50,130 @@ export function ChatInterface() {
 
   return (
     <div className="flex flex-col">
-      <p
-        className="text-[13px] text-[var(--amber)] mb-8 tracking-[0.05em]"
-        style={{ fontFamily: 'var(--font-geist-mono)' }}
-      >
-        live_query · ask about any system above
-      </p>
+      {/* Greeting — always visible */}
+      {!hasMessages && (
+        <div
+          style={{
+            background: 'hsl(var(--foreground)/0.04)',
+            border: '1px solid hsl(var(--foreground)/0.08)',
+            borderRadius: '12px',
+            padding: '12px 14px',
+            marginBottom: '16px',
+            fontSize: '13px',
+            lineHeight: 1.6,
+            color: 'hsl(var(--foreground)/0.6)',
+          }}
+        >
+          Hi — I&apos;m Charan&apos;s AI. Ask me about his projects, enterprise integrations, certifications, or how to reach him.
+        </div>
+      )}
 
-      <div className="flex-1 space-y-3">
+      {/* Messages */}
+      <div className="flex-1 space-y-1">
         {messages.map((message) => (
           <MessageBubble key={message.id} message={message} />
         ))}
 
+        {/* Loading indicator with stage cycling */}
         {isLoading && (
-          <div className="flex items-center gap-3 py-2">
+          <div className="flex items-center gap-3 py-2 mb-2">
             <div
-              className="w-6 h-6 flex items-center justify-center shrink-0"
-              style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '13px', color: 'var(--amber)' }}
+              style={{
+                width: '26px',
+                height: '26px',
+                borderRadius: '50%',
+                border: '1px solid hsl(var(--foreground)/0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: 'var(--font-geist-mono)',
+                fontSize: '9px',
+                letterSpacing: '0.05em',
+                color: 'var(--amber)',
+                flexShrink: 0,
+              }}
             >
-              cs
+              CS
             </div>
-            <div className="flex gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-foreground/30 animate-bounce [animation-delay:0ms]" />
-              <span className="w-1.5 h-1.5 rounded-full bg-foreground/30 animate-bounce [animation-delay:150ms]" />
-              <span className="w-1.5 h-1.5 rounded-full bg-foreground/30 animate-bounce [animation-delay:300ms]" />
-            </div>
+            <span
+              style={{
+                fontFamily: 'var(--font-geist-mono)',
+                fontSize: '11px',
+                color: 'hsl(var(--foreground)/0.35)',
+                letterSpacing: '0.04em',
+              }}
+            >
+              {STAGES[stageIdx]}
+              <span className="animate-pulse">...</span>
+            </span>
           </div>
         )}
 
-        {!hasUserMessage && (
-          <div className="pt-2">
-            <PromptChips onSelect={handlePromptSelect} />
+        {/* Quick question chips — only before first message */}
+        {!hasMessages && (
+          <div className="pt-1">
+            <PromptChips onSelect={handleChipSelect} disabled={isLoading} />
           </div>
         )}
+
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="sticky bottom-0 pt-6 pb-2 bg-background">
+      {/* Input */}
+      <div className="sticky bottom-0 pt-5 pb-1" style={{ background: 'transparent' }}>
         <form onSubmit={handleSubmit}>
           <div
-            className="flex items-end gap-3 px-4 py-3 transition-colors"
-            style={{ border: '2px solid hsl(var(--border))', outline: 'none' }}
+            style={{
+              display: 'flex',
+              alignItems: 'flex-end',
+              gap: '10px',
+              padding: '10px 14px',
+              border: '1px solid hsl(var(--foreground)/0.12)',
+              borderRadius: '12px',
+              background: 'var(--surface)',
+              transition: 'border-color 0.15s',
+            }}
           >
             <textarea
+              ref={textareaRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask me anything about my work..."
               rows={1}
-              className="flex-1 resize-none bg-transparent text-sm text-foreground placeholder-foreground/35 outline-none leading-relaxed"
+              style={{
+                flex: 1,
+                resize: 'none',
+                background: 'transparent',
+                fontSize: '14px',
+                lineHeight: 1.5,
+                color: 'hsl(var(--foreground)/0.85)',
+                outline: 'none',
+                border: 'none',
+                fontFamily: 'inherit',
+              }}
+              className="placeholder:text-foreground/30"
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="shrink-0 w-8 h-8 flex items-center justify-center bg-[var(--amber)] text-background hover:bg-[var(--amber-light)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               aria-label="Send"
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '8px',
+                border: 'none',
+                background: isLoading || !input.trim() ? 'hsl(var(--foreground)/0.08)' : 'var(--amber)',
+                color: isLoading || !input.trim() ? 'hsl(var(--foreground)/0.3)' : 'hsl(30 8% 5%)',
+                cursor: isLoading || !input.trim() ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                transition: 'background 0.15s',
+              }}
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </button>
