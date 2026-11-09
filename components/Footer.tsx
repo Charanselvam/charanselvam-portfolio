@@ -5,6 +5,7 @@ const PAGES = [
   ['Home', '/'],
   ['Work', '/work'],
   ['About', '/about'],
+  ['Resume', '/resume'],
   ['Contact', '/contact'],
   ['Ask AI', '/ai'],
 ];
