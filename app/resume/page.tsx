@@ -129,8 +129,26 @@ export default function ResumePage() {
         .rs-item + .rs-item { margin-top: 20px; padding-top: 20px; border-top: 1px solid hsl(var(--foreground) / 0.06); }
         .rs-line { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px 24px; flex-wrap: wrap; }
         .rs-when { color: hsl(var(--muted-foreground)); font-size: 13px; white-space: nowrap; font-family: var(--font-geist-mono); flex-shrink: 0; margin-top: 2px; }
-        .rs-paper ul { margin: 10px 0 0; padding-left: 18px; }
-        .rs-paper li { margin: 5px 0; font-size: 14.5px; line-height: 1.6; color: hsl(var(--foreground) / 0.75); }
+        .rs-paper ul { margin: 10px 0 0; padding-left: 0; list-style: none; }
+        .rs-paper li {
+          margin: 5px 0;
+          font-size: 14.5px;
+          line-height: 1.6;
+          color: hsl(var(--foreground) / 0.75);
+          position: relative;
+          padding-left: 16px;
+        }
+        .rs-paper li::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 8px;
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: var(--amber);
+          opacity: 0.75;
+        }
         .rs-paper p { margin: 0; }
         .rs-skills { list-style: none; padding-left: 0 !important; display: flex; flex-direction: column; gap: 6px; }
         .rs-skills li { font-size: 14px; color: hsl(var(--foreground) / 0.75); }
@@ -163,7 +181,8 @@ export default function ResumePage() {
           .rs-when { font-size: 8.5pt; color: #555 !important; }
           .rs-item + .rs-item { margin-top: 8px; padding-top: 8px; border-top-color: #eee !important; }
           .rs-paper ul { margin-top: 3px; }
-          .rs-paper li { margin: 1px 0; font-size: 9pt; color: #222 !important; }
+          .rs-paper li { margin: 1px 0; font-size: 9pt; color: #222 !important; padding-left: 12px; }
+          .rs-paper li::before { width: 4px; height: 4px; top: 6px; background: #555 !important; opacity: 1; }
           .rs-paper a { text-decoration: none; color: #000 !important; }
           .rs-item { break-inside: avoid; }
           .rs-tech { font-size: 8pt; }
