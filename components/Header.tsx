@@ -66,7 +66,7 @@ function ScrambleMark() {
 
 const NAV_LINKS = [
   { href: '/work', label: 'Work' },
-  { href: '/resume', label: 'Résumé' },
+  { href: '/resume', label: 'Resume' },
 ];
 
 const Header: React.FC = () => {

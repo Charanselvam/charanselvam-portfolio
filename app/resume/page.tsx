@@ -3,7 +3,7 @@ import { PROFILE, SKILLS } from '@/lib/content';
 import { PrintButton } from './PrintButton';
 
 export const metadata: Metadata = {
-  title: 'Résumé | Charanselvam S',
+  title: 'Resume | Charanselvam S',
   description: 'AI Integration Engineer — 5 years enterprise Java, Spring Boot, and production LLM systems. Chennai, India.',
 };
 
@@ -227,7 +227,7 @@ export default function ResumePage() {
               margin: '0 0 36px',
             }}
           >
-            Résumé<span style={{ color: 'var(--amber)' }}>.</span>
+            Resume<span style={{ color: 'var(--amber)' }}>.</span>
           </h1>
           <PrintButton />
         </div>
