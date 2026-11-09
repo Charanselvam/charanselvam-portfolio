@@ -6,18 +6,21 @@ export function PrintButton() {
       onClick={() => window.print()}
       style={{
         fontFamily: 'var(--font-geist-mono)',
-        fontSize: '12px',
-        letterSpacing: '0.08em',
-        padding: '9px 18px',
+        fontSize: '13px',
+        letterSpacing: '0.06em',
+        padding: '12px 24px',
         background: 'var(--amber)',
         color: 'hsl(30 8% 5%)',
         border: 'none',
-        borderRadius: '8px',
+        borderRadius: '999px',
         cursor: 'pointer',
         fontWeight: 700,
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '6px',
       }}
     >
-      PRINT / SAVE PDF
+      Download PDF ↓
     </button>
   );
 }

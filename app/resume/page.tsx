@@ -1,97 +1,82 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { PROFILE, SKILLS } from '@/lib/content';
 import { PrintButton } from './PrintButton';
 
 export const metadata: Metadata = {
-  title: 'Resume | Charanselvam S',
+  title: 'Résumé | Charanselvam S',
   description: 'AI Integration Engineer — 5 years enterprise Java, Spring Boot, and production LLM systems. Chennai, India.',
 };
 
 const EXPERIENCE = [
   {
     role: 'AI Integration Engineer',
-    company: 'Solartis LLC',
-    period: '2020 – Present',
-    location: 'Chennai, India',
-    bullets: [
+    org: 'Solartis LLC',
+    when: '2020 – Present',
+    points: [
       'Designed and shipped a config-driven third-party API integration marketplace for an enterprise insurance PAS — 4 carriers live in production, zero hardcoded integration logic.',
       'Replaced a failing IBM WatsonX Excel extraction with a Gemini-powered pipeline; parsing failures dropped from 30% to near zero in production.',
       'Built a self-service carrier onboarding workbench (FastAPI + React) so business analysts configure carrier endpoints, auth flows, and field mappings without developer involvement.',
-      'Authored CLAUDE.md knowledge bases for 5-year-old Java monoliths so Claude Code can reason about legacy codebases; accelerated AI-assisted delivery across the team.',
+      'Authored CLAUDE.md knowledge bases for a 5-year-old Java monolith so Claude Code can reason about the codebase; accelerated AI-assisted feature delivery across the team.',
       'Built an MCP server exposing MySQL databases as Claude Code tools — direct schema inspection, config tracing, and tenant-aware queries during development sessions.',
     ],
   },
 ];
 
-const EDUCATION = [
-  {
-    degree: 'B.E. Electronics & Communication Engineering',
-    school: 'Anna University',
-    period: '2016 – 2020',
-    detail: 'Final-year project: Smart Glass — Bluetooth-connected wearable HMD for hands-free notification display.',
-  },
-];
-
-const OCI_CERTS = [
-  { name: 'OCI Gen AI Professional', year: '2024' },
-  { name: 'OCI AI Vector Search', year: '2024' },
-  { name: 'OCI AI Foundations', year: '2024' },
-  { name: 'OCI Data Science', year: '2024' },
-  { name: 'Claude Code 101', year: '2026' },
-  { name: 'Claude 101', year: '2026' },
-];
-
-const RESUME_PROJECTS = [
+const PROJECTS = [
   {
     name: 'ThirdParty Service Integration Marketplace',
-    tech: 'Drools DRL · BPMN · Java · JSONata · MySQL',
-    detail: 'Config-driven marketplace for connecting any third-party API without code changes. 4 carriers, 20+ operations live.',
+    tech: 'Drools DRL, BPMN, Java, JSONata, MySQL, Spring Boot',
+    points: [
+      'Config-driven marketplace for connecting any third-party API to an insurance PAS without code changes. Field mappings, auth flows, and response parsing all in configuration.',
+      '4 carriers, 20+ operations (Quote, Bind, Cancel, Renew) live in production.',
+    ],
   },
   {
     name: 'AI Document Extractor',
-    tech: 'Java · Gemini API · Spring Boot · Docker',
-    detail: 'Extracts structured JSON from any Excel file using Gemini. Replaced IBM WatsonX; 30% → ~0% parsing failures.',
+    tech: 'Java, Gemini API, Spring Boot, Docker',
+    points: [
+      'Extracts structured JSON from any Excel file using Gemini, regardless of column layout or format variation.',
+      'Replaced a failing IBM WatsonX implementation; parsing failures dropped from 30% to near zero. Containerised and live in production.',
+    ],
   },
   {
     name: 'Carrier Onboarding Workbench',
-    tech: 'FastAPI · React · MySQL · JSONata',
-    detail: 'Self-service 9-step UI for onboarding carrier APIs. No developer involvement needed post-deployment.',
+    tech: 'FastAPI, React, MySQL, JSONata, Python',
+    points: [
+      'Self-service 9-step web UI for onboarding insurance carrier APIs. No developer involvement needed post-deployment.',
+      'Handles endpoint config, OAuth2 auth flows, JSONata field mappings, and live API testing.',
+    ],
   },
   {
     name: 'PDF RAG Chatbot',
-    tech: 'LangChain · ChromaDB · Ollama · HuggingFace',
-    detail: 'Fully local RAG system: chat with any PDF. No external API calls, no data leaves the machine.',
+    tech: 'LangChain, ChromaDB, Ollama, HuggingFace, Python',
+    points: [
+      'Fully local RAG system: chat with any uploaded PDF. HuggingFace embeddings index the document into ChromaDB; Ollama serves a local LLM for inference.',
+      'No external API calls, no data leaves the machine.',
+    ],
   },
 ];
 
-function Section({ label, children }: { label: string; children: React.ReactNode }) {
+const CERTS = [
+  'OCI Generative AI Professional · Oracle Cloud · 2024',
+  'OCI AI Vector Search · Oracle Cloud · 2024',
+  'OCI AI Foundations · Oracle Cloud · 2024',
+  'OCI Data Science · Oracle Cloud · 2024',
+  'Claude Code 101 · Anthropic · 2026',
+  'Claude 101 · Anthropic · 2026',
+];
+
+function Role({ role, org, when, points }: { role: string; org: string; when: string; points: string[] }) {
   return (
-    <section style={{ marginBottom: '44px' }}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '16px',
-          marginBottom: '20px',
-        }}
-      >
-        <span
-          style={{
-            fontFamily: 'var(--font-geist-mono)',
-            fontSize: '10px',
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'var(--amber)',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {label}
-        </span>
-        <div style={{ flex: 1, height: '1px', background: 'hsl(var(--foreground)/0.08)' }} />
+    <div className="rs-item">
+      <div className="rs-line">
+        <h3><b>{role}</b> at {org}</h3>
+        <span className="rs-when">({when})</span>
       </div>
-      {children}
-    </section>
+      <ul>
+        {points.map((p) => <li key={p}>{p}</li>)}
+      </ul>
+    </div>
   );
 }
 
@@ -99,327 +84,168 @@ export default function ResumePage() {
   return (
     <>
       <style>{`
+        /* ── paper card ── */
+        .rs-paper {
+          max-width: 880px;
+          margin: 0 auto;
+          padding: clamp(24px, 5vw, 56px);
+          border: 1px solid var(--line);
+          border-radius: 22px;
+          background: var(--surface);
+          font-size: 16px;
+          line-height: 1.6;
+        }
+        .rs-paper a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--amber) 55%, transparent); text-underline-offset: 3px; }
+        .rs-paper a:hover { color: var(--amber); }
+        .rs-top { text-align: center; margin-bottom: 8px; }
+        .rs-top h1 { margin: 0; font-size: clamp(32px, 5vw, 44px); letter-spacing: -.02em; }
+        .rs-role { margin: 4px 0 0; font-size: 18px; color: hsl(var(--muted-foreground)); }
+        .rs-contact { margin: 10px 0 0; font-size: 13.5px; color: hsl(var(--muted-foreground)); overflow-wrap: anywhere; }
+        .rs-paper h2 { margin: 32px 0 10px; padding-bottom: 6px; border-bottom: 1px solid hsl(var(--foreground)); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+        .rs-paper h3 { margin: 0; font-size: 16px; font-weight: 400; }
+        .rs-item + .rs-item { margin-top: 16px; }
+        .rs-line { display: flex; justify-content: space-between; align-items: baseline; gap: 6px 20px; flex-wrap: wrap; }
+        .rs-when { color: hsl(var(--muted-foreground)); font-size: 14px; white-space: nowrap; font-style: italic; }
+        .rs-paper ul { margin: 6px 0 0; padding-left: 20px; }
+        .rs-paper li { margin: 4px 0; font-size: 15px; }
+        .rs-paper p { margin: 0; }
+        .rs-skills { list-style: none; padding-left: 0 !important; }
+        .rs-tech { font-size: 13px; color: hsl(var(--muted-foreground)); font-style: italic; margin-top: 2px; }
+
+        /* ── print ── */
         @media print {
-          html, body { background: #fff !important; color: #111 !important; }
-          .no-print { display: none !important; }
-          .print-section { break-inside: avoid; }
-          a { color: inherit !important; text-decoration: none !important; }
+          @page { size: A4; margin: 12mm 14mm; }
+          :root { color-scheme: light; }
+          html, body { background: #fff !important; }
+          header, footer, .no-print { display: none !important; }
+          main { padding: 0 !important; }
+          .rs-wrap { padding: 0 !important; }
+          .rs-paper { max-width: none; border: 0; border-radius: 0; padding: 0; background: #fff !important; color: #000 !important; font-size: 10pt; line-height: 1.4; }
+          .rs-top h1 { font-size: 22pt; }
+          .rs-role { font-size: 11.5pt; }
+          .rs-contact { font-size: 8.5pt; }
+          .rs-paper h2 { margin: 14px 0 5px; padding-bottom: 3px; font-size: 10pt; border-color: #000; break-after: avoid; }
+          .rs-paper h3 { font-size: 10.5pt; }
+          .rs-line { flex-wrap: nowrap; }
+          .rs-when { font-size: 9pt; color: #333 !important; }
+          .rs-item + .rs-item { margin-top: 8px; }
+          .rs-paper ul { margin-top: 3px; }
+          .rs-paper li { margin: 1px 0; font-size: 9.5pt; }
+          .rs-paper a { text-decoration: none; color: #000 !important; }
+          .rs-contact { color: #333 !important; }
+          .rs-item { break-inside: avoid; }
+          .rs-tech { font-size: 8.5pt; }
         }
       `}</style>
 
-      <div
+      {/* Hero */}
+      <section
+        className="no-print"
         style={{
-          maxWidth: '800px',
-          margin: '0 auto',
-          padding: 'clamp(32px, 6vw, 80px) clamp(20px, 4vw, 48px)',
+          position: 'relative',
+          paddingTop: 'clamp(80px, 14vw, 190px)',
+          paddingBottom: '64px',
+          borderBottom: '1px solid var(--line)',
         }}
       >
-        {/* Top bar: back link + print button */}
-        <div
-          className="no-print"
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '48px',
-          }}
-        >
-          <Link
-            href="/about"
+        <div style={{ padding: '0 clamp(20px, 4vw, 48px)', maxWidth: '1200px', margin: '0 auto' }}>
+          <span
             style={{
               fontFamily: 'var(--font-geist-mono)',
-              fontSize: '12px',
-              color: 'hsl(var(--foreground)/0.4)',
-              textDecoration: 'none',
-              letterSpacing: '0.04em',
+              fontSize: '13px',
+              letterSpacing: '0.06em',
+              color: 'hsl(var(--muted-foreground))',
+              display: 'block',
+              marginBottom: '24px',
             }}
           >
-            ← About
-          </Link>
-          <PrintButton />
-        </div>
-
-        {/* Header */}
-        <header style={{ marginBottom: '52px' }}>
+            Web version · same layout as the PDF
+          </span>
           <h1
             style={{
-              fontSize: 'clamp(36px, 7vw, 72px)',
+              fontSize: 'clamp(48px, 13vw, 160px)',
               fontWeight: 700,
-              letterSpacing: '-0.03em',
-              lineHeight: 0.95,
-              marginBottom: '12px',
+              letterSpacing: '-0.04em',
+              lineHeight: 0.9,
+              margin: '0 0 32px',
             }}
           >
-            {PROFILE.name}
+            Résumé<span style={{ color: 'var(--amber)' }}>.</span>
           </h1>
-          <p
-            style={{
-              fontSize: '20px',
-              color: 'hsl(var(--foreground)/0.6)',
-              letterSpacing: '-0.01em',
-              marginBottom: '20px',
-            }}
-          >
-            {PROFILE.title}
-          </p>
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '20px',
-              fontFamily: 'var(--font-geist-mono)',
-              fontSize: '12px',
-              color: 'hsl(var(--foreground)/0.45)',
-              letterSpacing: '0.03em',
-            }}
-          >
-            <span>{PROFILE.location}</span>
-            <a
-              href={`mailto:${PROFILE.email}`}
-              style={{ color: 'inherit', textDecoration: 'none' }}
-            >
-              {PROFILE.email}
-            </a>
-            <a
-              href={PROFILE.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'inherit', textDecoration: 'none' }}
-            >
-              github/charanselvam
-            </a>
-            <a
-              href={PROFILE.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'inherit', textDecoration: 'none' }}
-            >
-              linkedin/charanselvam
-            </a>
-          </div>
-        </header>
+          <PrintButton />
+        </div>
+      </section>
 
-        {/* Summary */}
-        <Section label="Summary">
-          <p
-            style={{
-              fontSize: '15px',
-              lineHeight: 1.7,
-              color: 'hsl(var(--foreground)/0.7)',
-              maxWidth: '680px',
-            }}
-          >
-            {PROFILE.bio}
-          </p>
-        </Section>
+      {/* Paper */}
+      <section style={{ padding: '64px 0 110px' }}>
+        <div className="rs-wrap" style={{ padding: '0 clamp(16px, 3vw, 32px)' }}>
+          <article className="rs-paper">
 
-        {/* Experience */}
-        <Section label="Experience">
-          {EXPERIENCE.map((job) => (
-            <div key={job.company} className="print-section" style={{ marginBottom: '32px' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexWrap: 'wrap',
-                  gap: '4px',
-                  marginBottom: '4px',
-                }}
-              >
-                <span style={{ fontWeight: 600, fontSize: '16px', letterSpacing: '-0.01em' }}>
-                  {job.role}
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-geist-mono)',
-                    fontSize: '11px',
-                    color: 'hsl(var(--foreground)/0.4)',
-                    letterSpacing: '0.03em',
-                  }}
-                >
-                  {job.period}
-                </span>
-              </div>
-              <p
-                style={{
-                  fontFamily: 'var(--font-geist-mono)',
-                  fontSize: '12px',
-                  color: 'var(--amber)',
-                  letterSpacing: '0.04em',
-                  marginBottom: '12px',
-                }}
-              >
-                {job.company} · {job.location}
+            {/* Header */}
+            <div className="rs-top">
+              <h1>{PROFILE.name}</h1>
+              <p className="rs-role">{PROFILE.title}</p>
+              <p className="rs-contact">
+                <a href={`mailto:${PROFILE.email}`}>{PROFILE.email}</a>
+                {' | '}
+                {PROFILE.location}
+                {' | '}
+                <a href={PROFILE.github} target="_blank" rel="noopener noreferrer">github.com/charanselvam</a>
+                {' | '}
+                <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer">linkedin.com/in/charanselvam</a>
+                {' | '}
+                charanselvam.dev
               </p>
-              <ul
-                style={{
-                  paddingLeft: '0',
-                  listStyle: 'none',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '8px',
-                }}
-              >
-                {job.bullets.map((b) => (
-                  <li
-                    key={b}
-                    style={{
-                      display: 'flex',
-                      gap: '10px',
-                      fontSize: '14px',
-                      lineHeight: 1.6,
-                      color: 'hsl(var(--foreground)/0.65)',
-                    }}
-                  >
-                    <span style={{ color: 'var(--amber)', flexShrink: 0, marginTop: '2px' }}>–</span>
-                    <span>{b}</span>
-                  </li>
-                ))}
+            </div>
+
+            <h2>Summary</h2>
+            <p>{PROFILE.bio}</p>
+
+            <h2>Experience</h2>
+            {EXPERIENCE.map((r) => (
+              <Role key={r.org} role={r.role} org={r.org} when={r.when} points={r.points} />
+            ))}
+
+            <h2>Projects</h2>
+            {PROJECTS.map((p) => (
+              <div key={p.name} className="rs-item">
+                <h3><b>{p.name}</b></h3>
+                <p className="rs-tech">{p.tech}</p>
+                <ul>
+                  {p.points.map((x) => <li key={x}>{x}</li>)}
+                </ul>
+              </div>
+            ))}
+
+            <h2>Skills</h2>
+            <ul className="rs-skills">
+              {SKILLS.map(({ group, items }) => (
+                <li key={group}>
+                  <b>{group}:</b>{' '}
+                  {items.map(([name]) => name).join(', ')}
+                </li>
+              ))}
+            </ul>
+
+            <h2>Certifications</h2>
+            <ul>
+              {CERTS.map((c) => <li key={c}>{c}</li>)}
+            </ul>
+
+            <h2>Education</h2>
+            <div className="rs-item">
+              <div className="rs-line">
+                <h3><b>B.E. Electronics &amp; Communication Engineering</b> at Anna University, Chennai</h3>
+                <span className="rs-when">(2016 – 2020)</span>
+              </div>
+              <ul>
+                <li>Final-year project: Smart Glass — Bluetooth-connected wearable HMD for hands-free notification display (Arduino, OLED, Bluetooth HC05).</li>
               </ul>
             </div>
-          ))}
-        </Section>
 
-        {/* Projects */}
-        <Section label="Projects">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {RESUME_PROJECTS.map((p) => (
-              <div key={p.name} className="print-section">
-                <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px', marginBottom: '3px' }}>
-                  <span style={{ fontWeight: 600, fontSize: '14px' }}>{p.name}</span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-geist-mono)',
-                      fontSize: '10px',
-                      color: 'hsl(var(--foreground)/0.35)',
-                      letterSpacing: '0.04em',
-                    }}
-                  >
-                    {p.tech}
-                  </span>
-                </div>
-                <p style={{ fontSize: '13px', lineHeight: 1.5, color: 'hsl(var(--foreground)/0.55)', margin: 0 }}>
-                  {p.detail}
-                </p>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        {/* Skills */}
-        <Section label="Skills">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {SKILLS.map((group) => (
-              <div key={group.group} style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'baseline' }}>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-geist-mono)',
-                    fontSize: '10px',
-                    color: 'hsl(var(--foreground)/0.35)',
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    minWidth: '90px',
-                    flexShrink: 0,
-                  }}
-                >
-                  {group.group}
-                </span>
-                <span style={{ fontSize: '13px', color: 'hsl(var(--foreground)/0.6)', lineHeight: 1.6 }}>
-                  {group.items.map(([name]) => name).join(' · ')}
-                </span>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        {/* Certifications */}
-        <Section label="Certifications">
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-              gap: '8px',
-            }}
-          >
-            {OCI_CERTS.map((cert) => (
-              <div
-                key={cert.name}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'baseline',
-                  fontSize: '13px',
-                  color: 'hsl(var(--foreground)/0.6)',
-                  gap: '8px',
-                }}
-              >
-                <span>{cert.name}</span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-geist-mono)',
-                    fontSize: '10px',
-                    color: 'hsl(var(--foreground)/0.3)',
-                  }}
-                >
-                  {cert.year}
-                </span>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        {/* Education */}
-        <Section label="Education">
-          {EDUCATION.map((edu) => (
-            <div key={edu.school} className="print-section">
-              <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px' }}>
-                <span style={{ fontWeight: 600, fontSize: '15px' }}>{edu.degree}</span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-geist-mono)',
-                    fontSize: '11px',
-                    color: 'hsl(var(--foreground)/0.4)',
-                  }}
-                >
-                  {edu.period}
-                </span>
-              </div>
-              <p
-                style={{
-                  fontFamily: 'var(--font-geist-mono)',
-                  fontSize: '12px',
-                  color: 'var(--amber)',
-                  letterSpacing: '0.04em',
-                  margin: '3px 0 6px',
-                }}
-              >
-                {edu.school}
-              </p>
-              {edu.detail && (
-                <p style={{ fontSize: '13px', color: 'hsl(var(--foreground)/0.5)', lineHeight: 1.5 }}>
-                  {edu.detail}
-                </p>
-              )}
-            </div>
-          ))}
-        </Section>
-
-        {/* Footer note */}
-        <div
-          className="no-print"
-          style={{
-            marginTop: '64px',
-            paddingTop: '24px',
-            borderTop: '1px solid hsl(var(--foreground)/0.08)',
-            fontFamily: 'var(--font-geist-mono)',
-            fontSize: '11px',
-            color: 'hsl(var(--foreground)/0.3)',
-            letterSpacing: '0.04em',
-          }}
-        >
-          charanselvam.dev · {new Date().getFullYear()}
+          </article>
         </div>
-      </div>
+      </section>
     </>
   );
 }
