@@ -199,8 +199,8 @@ export default function ResumePage() {
         className="no-print"
         style={{
           position: 'relative',
-          paddingTop: 'clamp(80px, 14vw, 190px)',
-          paddingBottom: '64px',
+          paddingTop: 'clamp(72px, 10vw, 120px)',
+          paddingBottom: '48px',
           borderBottom: '1px solid var(--line)',
         }}
       >
@@ -303,7 +303,7 @@ export default function ResumePage() {
                   <h3 style={{ fontWeight: 700 }}>B.E. Electronics &amp; Communication Engineering</h3>
                   <p className="rs-org">Anna University, Chennai</p>
                 </div>
-                <span className="rs-when">2016 – 2020</span>
+                <span className="rs-when">2017 – 2021</span>
               </div>
               <ul>
                 <li>Final-year project: Smart Glass — Bluetooth-connected wearable HMD for hands-free notification display (Arduino, OLED, Bluetooth HC05).</li>

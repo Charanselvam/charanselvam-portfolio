@@ -1,11 +1,6 @@
 'use client';
 
-const PROMPTS = [
-  'How did you crack the carrier integration?',
-  'What was wrong with the IBM WatsonX setup?',
-  'What would you build at a company still on legacy?',
-  'Are you open to fully remote roles?',
-];
+import { QA } from '@/lib/qa';
 
 export function PromptChips({
   onSelect,
@@ -15,38 +10,40 @@ export function PromptChips({
   disabled?: boolean;
 }) {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-      {PROMPTS.map((prompt) => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px' }}>
+      {QA.map(({ question }) => (
         <button
-          key={prompt}
-          onClick={() => onSelect(prompt)}
+          key={question}
+          onClick={() => onSelect(question)}
           disabled={disabled}
           style={{
             fontFamily: 'var(--font-geist-mono)',
             fontSize: '11px',
-            padding: '6px 12px',
+            padding: '7px 13px',
             borderRadius: '999px',
-            border: '1px solid hsl(var(--foreground)/0.12)',
+            border: '1px solid hsl(var(--foreground)/0.11)',
             background: 'transparent',
             color: 'hsl(var(--foreground)/0.45)',
             cursor: disabled ? 'not-allowed' : 'pointer',
-            opacity: disabled ? 0.5 : 1,
-            transition: 'border-color 0.15s, color 0.15s',
+            opacity: disabled ? 0.4 : 1,
+            transition: 'border-color 0.15s, color 0.15s, background 0.15s',
             letterSpacing: '0.02em',
             lineHeight: 1.4,
             textAlign: 'left',
           }}
           onMouseEnter={(e) => {
             if (disabled) return;
-            e.currentTarget.style.borderColor = 'var(--amber)';
+            e.currentTarget.style.borderColor = 'hsl(var(--amber) / 0.6)';
             e.currentTarget.style.color = 'var(--amber)';
+            e.currentTarget.style.background = 'hsl(var(--amber) / 0.05)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = 'hsl(var(--foreground)/0.12)';
+            e.currentTarget.style.borderColor = 'hsl(var(--foreground)/0.11)';
             e.currentTarget.style.color = 'hsl(var(--foreground)/0.45)';
+            e.currentTarget.style.background = 'transparent';
           }}
         >
-          {prompt}
+          {question}
         </button>
       ))}
     </div>

@@ -105,6 +105,69 @@ export function MessageBubble({ message }: { message: UIMessage }) {
             }
           }
 
+          if (part.type === 'tool-show_sources') {
+            const toolPart = part as { type: string; state: string; output?: { items: { label: string; href: string }[] } };
+            if (toolPart.state === 'output-available' && toolPart.output?.items?.length) {
+              return (
+                <div
+                  key={i}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '6px',
+                    marginTop: '12px',
+                    paddingTop: '10px',
+                    borderTop: '1px solid hsl(var(--foreground)/0.07)',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-geist-mono)',
+                      fontSize: '10px',
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      color: 'hsl(var(--foreground)/0.25)',
+                    }}
+                  >
+                    From
+                  </span>
+                  {toolPart.output.items.map((s) => (
+                    <a
+                      key={s.href}
+                      href={s.href}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        fontFamily: 'var(--font-geist-mono)',
+                        fontSize: '10px',
+                        letterSpacing: '0.04em',
+                        color: 'hsl(var(--foreground)/0.45)',
+                        textDecoration: 'none',
+                        padding: '3px 8px',
+                        borderRadius: '6px',
+                        border: '1px solid hsl(var(--foreground)/0.08)',
+                        transition: 'color 0.15s, border-color 0.15s',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = 'var(--amber)';
+                        e.currentTarget.style.borderColor = 'hsl(var(--amber) / 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = 'hsl(var(--foreground)/0.45)';
+                        e.currentTarget.style.borderColor = 'hsl(var(--foreground)/0.08)';
+                      }}
+                    >
+                      <span style={{ color: 'var(--amber)', opacity: 0.5, fontSize: '9px' }}>→</span>
+                      {s.label}
+                    </a>
+                  ))}
+                </div>
+              );
+            }
+          }
+
           return null;
         })}
       </div>

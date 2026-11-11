@@ -89,4 +89,18 @@ export const portfolioTools = {
       linkedin: 'https://linkedin.com/in/charanselvam',
     }),
   }),
+
+  show_sources: tool({
+    description:
+      'Cite which portfolio sections this answer draws from. Call at the end of every response. Available hrefs: /resume, /work, /about, /contact.',
+    inputSchema: z.object({
+      items: z.array(
+        z.object({
+          label: z.string().describe('Short display name, e.g. "Resume", "Projects", "About"'),
+          href: z.string().describe('Portfolio path, e.g. /resume'),
+        })
+      ),
+    }),
+    execute: async ({ items }: { items: { label: string; href: string }[] }) => ({ items }),
+  }),
 };

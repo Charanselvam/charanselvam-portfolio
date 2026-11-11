@@ -64,10 +64,6 @@ function ScrambleMark() {
   );
 }
 
-const NAV_LINKS = [
-  { href: '/work', label: 'Work' },
-  { href: '/resume', label: 'Resume' },
-];
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -78,27 +74,25 @@ const Header: React.FC = () => {
       <header className="flex items-center justify-between px-6 sm:px-8 py-6">
         <ScrambleMark />
 
-        <nav className="hidden sm:flex items-center gap-6">
-          {NAV_LINKS.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              style={{
-                fontFamily: 'var(--font-geist-mono)',
-                fontSize: '13px',
-                letterSpacing: '0.04em',
-                color: pathname === href ? 'var(--amber)' : 'hsl(var(--muted-foreground))',
-                textDecoration: 'none',
-                transition: 'color 0.15s',
-              }}
-              className="hover:text-[var(--amber)]"
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
-
         <div className="flex items-center gap-5">
+          <Link
+            href="/resume"
+            style={{
+              fontFamily: 'var(--font-geist-mono)',
+              fontSize: '11px',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+              padding: '5px 13px',
+              borderRadius: '999px',
+              border: `1px solid ${pathname === '/resume' ? 'var(--amber)' : 'hsl(var(--muted-foreground) / 0.35)'}`,
+              color: pathname === '/resume' ? 'var(--amber)' : 'hsl(var(--muted-foreground))',
+              transition: 'border-color 0.15s, color 0.15s',
+            }}
+            className="hover:border-[var(--amber)] hover:text-[var(--amber)]"
+          >
+            Resume
+          </Link>
           <ModeToggle />
           <button
             onClick={() => setMenuOpen(true)}

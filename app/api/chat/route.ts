@@ -47,6 +47,8 @@ Do not discuss salary expectations, internal system names, specific client names
 
 Keep answers concise and conversational — this is a chat, not a cover letter. 2-4 sentences per point, then ask a follow-up if appropriate.
 
+SOURCE CITATIONS — REQUIRED: After every response, call show_sources with the portfolio pages the answer references. Use these hrefs: /resume for experience/skills/certifications, /work for projects, /about for personal background, /contact for contact details. Only cite pages actually referenced. If the answer draws from nothing specific, omit the call.
+
 Below is my career background:`;
 
 export async function POST(req: Request) {
@@ -63,7 +65,16 @@ export async function POST(req: Request) {
     const { messages } = await req.json();
     const context = buildContext();
 
-    const modelMessages = await convertToModelMessages(messages, {
+    // Strip show_sources tool parts from history — it's display-only and
+    // replaying its tool calls triggers Gemini's thoughtSignature warning.
+    const filteredMessages = (messages as { role: string; parts?: { type: string }[] }[]).map((m) => ({
+      ...m,
+      parts: m.parts?.filter(
+        (p) => p.type !== 'tool-show_sources' && p.type !== 'tool-result-show_sources'
+      ),
+    }));
+
+    const modelMessages = await convertToModelMessages(filteredMessages as typeof messages, {
       tools: portfolioTools,
     });
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { ChatInterface } from './ChatInterface';
+import { ChatPanel } from './ChatInterface';
 
 export function ChatFAB() {
   const [open, setOpen] = useState(false);
@@ -141,10 +141,7 @@ export function ChatFAB() {
           </button>
         </div>
 
-        {/* Chat content */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>
-          <ChatInterface />
-        </div>
+        <ChatPanel />
       </div>
     </>
   );
