@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# internal tooling
+CLAUDE.md
+AGENTS.md
+master.md
+claudedocs/
+.taste-skill/
+.mcp.json
+*.log
