@@ -86,19 +86,23 @@ const Footer = () => (
         color: hsl(var(--background) / 0.35);
         margin-bottom: 14px;
       }
+      .foot-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: start;
+      }
+      @media (min-width: 768px) {
+        .foot-grid {
+          grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.2fr);
+        }
+      }
     `}</style>
 
     {/* Main grid */}
     <div
-      className="px-6 sm:px-8"
-      style={{
-        paddingTop: '56px',
-        paddingBottom: '32px',
-        display: 'grid',
-        gridTemplateColumns: 'minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.2fr)',
-        gap: '40px',
-        alignItems: 'start',
-      }}
+      className="foot-grid px-6 sm:px-8"
+      style={{ paddingTop: '56px', paddingBottom: '32px' }}
     >
       {/* Col 1: tagline + email + social icons */}
       <div>
