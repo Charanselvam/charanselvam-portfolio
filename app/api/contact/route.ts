@@ -68,8 +68,6 @@ export async function POST(req: NextRequest) {
   });
 
   const rawText = await web3Res.text();
-  console.log('[web3forms status]', web3Res.status);
-  console.log('[web3forms raw]', rawText.slice(0, 300));
   let web3Data: { success: boolean; message?: string };
   try {
     web3Data = JSON.parse(rawText) as { success: boolean; message?: string };

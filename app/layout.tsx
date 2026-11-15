@@ -8,6 +8,7 @@ import { ChatFAB } from "@/components/ChatFAB";
 import { ThemeProvider } from "next-themes";
 import { ChatProvider } from "@/context/ChatContext";
 import { PageTransition } from "@/components/PageTransition";
+import { SITE_URL } from "@/lib/site";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -21,7 +22,6 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://charanselvam.dev';
 const TITLE = 'Charanselvam S | AI Integration Engineer';
 const DESCRIPTION =
   'AI Integration Engineer with 5+ years of enterprise Java and Spring Boot experience. Ships LLM-powered features to production. 4 OCI AI certifications. Chennai, India.';

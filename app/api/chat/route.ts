@@ -1,8 +1,13 @@
 import { streamText, convertToModelMessages, stepCountIs } from 'ai';
 import { google } from '@ai-sdk/google';
 import { createOpenAI } from '@ai-sdk/openai';
+import { NextRequest } from 'next/server';
+import { z } from 'zod';
 import { buildContext } from '@/lib/context';
 import { portfolioTools } from '@/lib/tools';
+import { checkRateLimit } from '@/lib/rate-limit';
+
+export const maxDuration = 30;
 
 function getModel() {
   const provider = process.env.AI_PROVIDER;
@@ -30,6 +35,31 @@ function getModel() {
   return null;
 }
 
+const messageSchema = z.object({
+  role: z.enum(['user', 'assistant', 'system']),
+  parts: z.array(z.record(z.string(), z.unknown())).optional(),
+  content: z.string().optional(),
+});
+
+const bodySchema = z.object({
+  messages: z
+    .array(messageSchema)
+    .max(20, 'Too many messages in context'),
+});
+
+function totalTextLength(messages: z.infer<typeof bodySchema>['messages']): number {
+  return messages.reduce((sum, m) => {
+    if (typeof m.content === 'string') return sum + m.content.length;
+    if (Array.isArray(m.parts)) {
+      return sum + m.parts.reduce((s: number, p: Record<string, unknown>) => {
+        if (typeof p.text === 'string') return s + p.text.length;
+        return s;
+      }, 0);
+    }
+    return sum;
+  }, 0);
+}
+
 const SYSTEM_PROMPT = `You are Charanselvam S — an AI Integration Engineer with 5+ years of enterprise Java and Spring Boot experience, based in Chennai, India.
 
 Speak in first person. You ARE Charanselvam, not an assistant describing him. Say "I built...", "I shipped...", "My experience is..." — never "Charanselvam built...".
@@ -51,9 +81,21 @@ SOURCE CITATIONS — REQUIRED: After every response, call show_sources with the 
 
 Below is my career background:`;
 
-export async function POST(req: Request) {
-  const model = getModel();
+export async function POST(req: NextRequest) {
+  const ip =
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+    req.headers.get('x-real-ip') ??
+    'unknown';
 
+  // Per-IP rate limits (in-memory; per-instance on serverless)
+  if (!checkRateLimit(`chat:min:${ip}`, { windowMs: 60_000, max: 10 })) {
+    return Response.json({ error: 'Too many requests. Please wait a moment.' }, { status: 429 });
+  }
+  if (!checkRateLimit(`chat:day:${ip}`, { windowMs: 86_400_000, max: 100 })) {
+    return Response.json({ error: 'Daily limit reached. Try again tomorrow.' }, { status: 429 });
+  }
+
+  const model = getModel();
   if (!model) {
     return Response.json(
       { error: 'AI chat is not available — no provider configured.' },
@@ -61,20 +103,37 @@ export async function POST(req: Request) {
     );
   }
 
+  let rawBody: unknown;
   try {
-    const { messages } = await req.json();
+    rawBody = await req.json();
+  } catch {
+    return Response.json({ error: 'Invalid request body.' }, { status: 400 });
+  }
+
+  const parsed = bodySchema.safeParse(rawBody);
+  if (!parsed.success) {
+    return Response.json({ error: parsed.error.issues[0]?.message ?? 'Invalid request.' }, { status: 400 });
+  }
+
+  if (totalTextLength(parsed.data.messages) > 4000) {
+    return Response.json({ error: 'Request payload too large.' }, { status: 400 });
+  }
+
+  try {
+    const { messages } = parsed.data;
     const context = buildContext();
 
     // Strip show_sources tool parts from history — it's display-only and
     // replaying its tool calls triggers Gemini's thoughtSignature warning.
-    const filteredMessages = (messages as { role: string; parts?: { type: string }[] }[]).map((m) => ({
+    const filteredMessages = messages.map((m) => ({
       ...m,
-      parts: m.parts?.filter(
-        (p) => p.type !== 'tool-show_sources' && p.type !== 'tool-result-show_sources'
+      parts: (m.parts as Array<Record<string, unknown>> | undefined)?.filter(
+        (p) => p['type'] !== 'tool-show_sources' && p['type'] !== 'tool-result-show_sources'
       ),
     }));
 
-    const modelMessages = await convertToModelMessages(filteredMessages as typeof messages, {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const modelMessages = await convertToModelMessages(filteredMessages as any, {
       tools: portfolioTools,
     });
 
