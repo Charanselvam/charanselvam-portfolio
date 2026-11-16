@@ -2,7 +2,7 @@ export function PrintButton() {
   return (
     <a
       href="/resume.pdf"
-      download="Charanselvam_S_Resume.pdf"
+      download="Charanselvam_S_AI_Integration_Engineer_Resume.pdf"
       style={{
         fontFamily: 'var(--font-geist-mono)',
         fontSize: '13px',
