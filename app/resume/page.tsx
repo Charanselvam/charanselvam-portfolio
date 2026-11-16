@@ -1,68 +1,143 @@
 import type { Metadata } from 'next';
-import { PROFILE, SKILLS } from '@/lib/content';
+import type { ReactNode } from 'react';
 import { PrintButton } from './PrintButton';
 
 export const metadata: Metadata = {
   title: 'Resume | Charanselvam S',
-  description: 'AI Integration Engineer — 5 years enterprise Java, Spring Boot, and production LLM systems. Chennai, India.',
+  description:
+    'AI Integration Engineer building AI agents, MCP servers, RAG pipelines, and API integrations for enterprise systems. Chennai, India.',
 };
 
-const EXPERIENCE = [
-  {
-    role: 'AI Integration Engineer',
-    org: 'Solartis LLC',
-    when: '2020 – Present',
-    location: 'Chennai, India',
-    points: [
-      'Designed and shipped a config-driven third-party API integration marketplace for an enterprise insurance PAS — 4 carriers live in production, zero hardcoded integration logic.',
-      'Replaced a failing IBM WatsonX Excel extraction with a Gemini-powered pipeline; parsing failures dropped from 30% to near zero in production.',
-      'Built a self-service carrier onboarding workbench (FastAPI + React) so business analysts configure carrier endpoints, auth flows, and field mappings without developer involvement.',
-      'Authored CLAUDE.md knowledge bases for a 5-year-old Java monolith so Claude Code can reason accurately about legacy architecture; accelerated AI-assisted feature delivery across the team.',
-      'Built an MCP server exposing MySQL databases as Claude Code tools — direct schema inspection, config tracing, and tenant-aware queries during development sessions.',
-    ],
-  },
+/* ── Content: mirrors resume.tex 1:1 ───────────────────────────── */
+
+const PROFILE = {
+  name: 'Charanselvam S',
+  title: 'AI Integration Engineer',
+  email: 'charanselvam.csk@gmail.com',
+  location: 'Chennai, India',
+  github: 'https://github.com/charanselvam',
+  linkedin: 'https://www.linkedin.com/in/charanselvam',
+  portfolio: 'https://charanselvam.vercel.app/',
+};
+
+const SUMMARY =
+  'I build AI agents, Model Context Protocol (MCP) servers, Retrieval-Augmented Generation (RAG) pipelines, and API integration layers that plug into enterprise systems already in production. Backed by 5+ years of enterprise Java and Spring Boot engineering. Shipped features with real users, not prototypes.';
+
+const SKILLS: { group: string; items: string }[] = [
+  { group: 'AI/LLM', items: 'LLM Integration, AI Agents, RAG, MCP, Prompt Engineering, LangChain, Gemini API, Ollama, ChromaDB, HuggingFace, Claude Code' },
+  { group: 'Languages', items: 'Java, SQL, Python, TypeScript, JavaScript' },
+  { group: 'Frameworks', items: 'Spring Boot, FastAPI, REST APIs, React, Next.js, React Native' },
+  { group: 'Integration', items: 'JSONata, OAuth2, JWT, BPMN, Drools DRL, ActiveMQ' },
+  { group: 'Database', items: 'MySQL, PostgreSQL, Oracle DB' },
+  { group: 'Cloud', items: 'Oracle Cloud Infrastructure (OCI), OCI Functions, Serverless' },
+  { group: 'Tools', items: 'Docker, Git, GitHub Actions, Jenkins, CI/CD, Postman, Swagger' },
 ];
 
-const PROJECTS = [
-  {
-    name: 'ThirdParty Service Integration Marketplace',
-    tech: 'Drools DRL · BPMN · Java · JSONata · MySQL · Spring Boot',
-    points: [
-      'Config-driven marketplace for connecting any third-party API to an insurance PAS without code changes. Field mappings, auth flows, and response parsing are all in configuration.',
-      '4 carriers, 20+ operations (Quote, Bind, Cancel, Renew) live in production.',
-    ],
-  },
-  {
-    name: 'AI Document Extractor',
-    tech: 'Java · Gemini API · Spring Boot · Docker',
-    points: [
-      'Extracts structured JSON from any Excel file using Gemini, regardless of column layout or format variation.',
-      'Replaced a failing IBM WatsonX implementation; parsing failures dropped from 30% to near zero. Containerised and live in production.',
-    ],
-  },
-  {
-    name: 'Carrier Onboarding Workbench',
-    tech: 'FastAPI · React · MySQL · JSONata · Python',
-    points: [
-      'Self-service 9-step web UI for onboarding insurance carrier APIs. No developer involvement needed post-deployment.',
-      'Handles endpoint config, OAuth2 auth flows, JSONata field mappings, and live API testing.',
-    ],
-  },
-  {
-    name: 'PDF RAG Chatbot',
-    tech: 'LangChain · ChromaDB · Ollama · HuggingFace · Python',
-    points: [
-      'Fully local RAG system: chat with any uploaded PDF. HuggingFace embeddings index the document into ChromaDB; Ollama serves a local LLM for inference.',
-      'No external API calls, no data leaves the machine.',
-    ],
-  },
-];
+function RepoLink({ href }: { href: string }) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer">
+      {href.replace('https://', '')}
+    </a>
+  );
+}
+
+const EXPERIENCE: {
+  role: string; org: string; when: string; location: string; points: ReactNode[];
+}[] = [
+    {
+      role: 'AI Integration Engineer',
+      org: 'Solartis Technology Services Pvt. Ltd',
+      when: 'Jul 2021 – Present',
+      location: 'Chennai, India',
+      points: [
+        <>
+          Designed and shipped a <b>config-driven third-party API integration marketplace</b> for an
+          enterprise insurance PAS, with <b>4 carriers live in production</b> across 20+ operations
+          (Quote, Bind, Cancel, Renew) and <b>zero hardcoded integration logic</b>.
+        </>,
+        <>
+          Replaced a failing IBM WatsonX Excel extraction with a <b>Google Gemini LLM pipeline</b>;
+          parsing failures dropped from <b>30% to near zero</b> in production.
+        </>,
+        <>
+          Built a <b>self-service carrier onboarding workbench (FastAPI + React)</b> so business
+          analysts configure carrier endpoints, auth flows, and field mappings{' '}
+          <b>without developer involvement</b>.
+        </>,
+        <>
+          Authored <b>CLAUDE.md knowledge bases</b> for a 5-year-old Java monolith so Claude Code can
+          reason accurately about legacy architecture;{' '}
+          <b>accelerated AI-assisted feature delivery</b> across the team.
+        </>,
+        <>
+          Built an <b>MCP server exposing MySQL databases as Claude Code tools</b>, enabling direct
+          schema inspection, config tracing, and tenant-aware queries during development sessions.
+        </>,
+      ],
+    },
+  ];
+
+const PROJECTS: {
+  name: string; stack: string; when: string; description: string; points: ReactNode[];
+}[] = [
+    {
+      name: 'ThirdParty Service Integration Marketplace',
+      stack: 'Drools DRL | BPMN | Java | JSONata | MySQL | Spring Boot',
+      when: '2025 – Present',
+      description:
+        'Config-driven marketplace for connecting any third-party API to an insurance PAS without code changes. Field mappings, auth flows, and response parsing are all in configuration.',
+      points: [
+        <>
+          <b>4 carriers, 20+ operations</b> (Quote, Bind, Cancel, Renew) live in production.
+        </>,
+      ],
+    },
+    {
+      name: 'AI Document Extractor',
+      stack: 'Java | Gemini API | Spring Boot | Docker',
+      when: '2025',
+      description:
+        'Extracts structured JSON from any Excel file using Gemini, regardless of column layout or format variation.',
+      points: [
+        <>
+          Replaced a failing IBM WatsonX implementation; parsing failures dropped from{' '}
+          <b>30% to near zero</b>. Containerised and live in production.{' '}
+          <RepoLink href="https://github.com/Charanselvam/ai-document-extractor" />
+        </>,
+      ],
+    },
+    {
+      name: 'Carrier Onboarding Workbench',
+      stack: 'FastAPI | React | MySQL | JSONata | Python',
+      when: '2025',
+      description:
+        'Self-service 9-step web UI for onboarding insurance carrier APIs. No developer involvement needed post-deployment.',
+      points: [
+        <>
+          Handles endpoint config, OAuth2 auth flows, JSONata field mappings, and live API testing.
+        </>,
+      ],
+    },
+    {
+      name: 'PDF RAG Chatbot',
+      stack: 'LangChain | ChromaDB | Ollama | HuggingFace | Python',
+      when: '2025',
+      description:
+        'Fully local RAG system: chat with any uploaded PDF. HuggingFace embeddings index the document into ChromaDB; Ollama serves a local LLM for inference.',
+      points: [
+        <>
+          No external API calls, no data leaves the machine.{' '}
+          <RepoLink href="https://github.com/Charanselvam/RAG-Chatbot" />
+        </>,
+      ],
+    },
+  ];
 
 const CERTS = [
-  { name: 'OCI Generative AI Professional', issuer: 'Oracle Cloud', year: '2024' },
-  { name: 'OCI AI Vector Search', issuer: 'Oracle Cloud', year: '2024' },
-  { name: 'OCI AI Foundations', issuer: 'Oracle Cloud', year: '2024' },
-  { name: 'OCI Data Science', issuer: 'Oracle Cloud', year: '2024' },
+  { name: 'OCI Generative AI Professional', issuer: 'Oracle Cloud', year: '2025' },
+  { name: 'OCI AI Vector Search', issuer: 'Oracle Cloud', year: '2025' },
+  { name: 'OCI AI Foundations', issuer: 'Oracle Cloud', year: '2025' },
+  { name: 'OCI Data Science', issuer: 'Oracle Cloud', year: '2025' },
   { name: 'Claude Code 101', issuer: 'Anthropic', year: '2026' },
   { name: 'Claude 101', issuer: 'Anthropic', year: '2026' },
 ];
@@ -70,7 +145,7 @@ const CERTS = [
 function Role({
   role, org, when, location, points,
 }: {
-  role: string; org: string; when: string; location: string; points: string[];
+  role: string; org: string; when: string; location: string; points: ReactNode[];
 }) {
   return (
     <div className="rs-item">
@@ -82,7 +157,29 @@ function Role({
         <span className="rs-when">{when}</span>
       </div>
       <ul>
-        {points.map((p) => <li key={p}>{p}</li>)}
+        {points.map((p, i) => <li key={i}>{p}</li>)}
+      </ul>
+    </div>
+  );
+}
+
+function Project({
+  name, stack, when, description, points,
+}: {
+  name: string; stack: string; when: string; description: string; points: ReactNode[];
+}) {
+  return (
+    <div className="rs-item">
+      <div className="rs-line">
+        <div>
+          <h3 style={{ fontWeight: 700, fontSize: '17px' }}>{name}</h3>
+          <p className="rs-org">{stack}</p>
+        </div>
+        <span className="rs-when">{when}</span>
+      </div>
+      <p className="rs-desc">{description}</p>
+      <ul>
+        {points.map((p, i) => <li key={i}>{p}</li>)}
       </ul>
     </div>
   );
@@ -152,8 +249,8 @@ export default function ResumePage() {
         .rs-paper p { margin: 0; }
         .rs-skills { list-style: none; padding-left: 0 !important; display: flex; flex-direction: column; gap: 6px; }
         .rs-skills li { font-size: 14px; color: hsl(var(--foreground) / 0.75); }
-        .rs-tech { font-size: 12px; color: hsl(var(--muted-foreground)); font-family: var(--font-geist-mono); margin: 3px 0 6px; letter-spacing: 0.02em; }
         .rs-summary { font-size: 15px; line-height: 1.7; color: hsl(var(--foreground) / 0.7); }
+        .rs-paper .rs-desc { margin: 6px 0 0; font-size: 14.5px; line-height: 1.6; color: hsl(var(--foreground) / 0.75); }
 
         /* certs grid */
         .rs-certs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 32px; list-style: none; padding: 0; }
@@ -185,11 +282,11 @@ export default function ResumePage() {
           .rs-paper li::before { width: 4px; height: 4px; top: 6px; background: #555 !important; opacity: 1; }
           .rs-paper a { text-decoration: none; color: #000 !important; }
           .rs-item { break-inside: avoid; }
-          .rs-tech { font-size: 8pt; }
           .rs-certs { grid-template-columns: 1fr 1fr; gap: 2px 24px; }
           .rs-certs li { font-size: 9pt; }
           .rs-cert-issuer, .rs-cert-year { font-size: 7.5pt; color: #555 !important; }
           .rs-summary { font-size: 9.5pt; color: #333 !important; }
+          .rs-paper .rs-desc { margin: 3px 0 0; font-size: 9pt; color: #333 !important; }
           .rs-skills li { font-size: 9pt; color: #333 !important; }
         }
       `}</style>
@@ -251,12 +348,12 @@ export default function ResumePage() {
                 <span>·</span>
                 <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer">linkedin.com/in/charanselvam</a>
                 <span>·</span>
-                charanselvam.dev
+                <a href={PROFILE.portfolio} target="_blank" rel="noopener noreferrer">charanselvam.vercel.app</a>
               </p>
             </div>
 
             <h2>Summary</h2>
-            <p className="rs-summary">{PROFILE.bio}</p>
+            <p className="rs-summary">{SUMMARY}</p>
 
             <h2>Experience</h2>
             {EXPERIENCE.map((r) => (
@@ -265,23 +362,15 @@ export default function ResumePage() {
 
             <h2>Projects</h2>
             {PROJECTS.map((p) => (
-              <div key={p.name} className="rs-item">
-                <h3 style={{ fontWeight: 700 }}>{p.name}</h3>
-                <p className="rs-tech">{p.tech}</p>
-                <ul>
-                  {p.points.map((x) => <li key={x}>{x}</li>)}
-                </ul>
-              </div>
+              <Project key={p.name} name={p.name} stack={p.stack} when={p.when} description={p.description} points={p.points} />
             ))}
 
-            <h2>Skills</h2>
+            <h2>Technical Skills</h2>
             <ul className="rs-skills">
               {SKILLS.map(({ group, items }) => (
                 <li key={group}>
                   <b>{group}:</b>{' '}
-                  <span style={{ color: 'hsl(var(--foreground)/0.6)' }}>
-                    {items.map(([name]) => name).join(', ')}
-                  </span>
+                  <span style={{ color: 'hsl(var(--foreground)/0.6)' }}>{items}</span>
                 </li>
               ))}
             </ul>
@@ -300,14 +389,20 @@ export default function ResumePage() {
             <div className="rs-item">
               <div className="rs-line">
                 <div>
-                  <h3 style={{ fontWeight: 700 }}>B.E. Electronics &amp; Communication Engineering</h3>
-                  <p className="rs-org">Anna University, Chennai</p>
+                  <h3 style={{ fontWeight: 700 }}>Bachelor of Engineering (B.E.) in Electronics & Communication Engineering</h3>
+                  <p className="rs-org">Velammal Institute of Technology (Anna University) · Chennai</p>
                 </div>
                 <span className="rs-when">2017 – 2021</span>
               </div>
-              <ul>
-                <li>Final-year project: Smart Glass — Bluetooth-connected wearable HMD for hands-free notification display (Arduino, OLED, Bluetooth HC05).</li>
-              </ul>
+              <p className="rs-desc">
+                Final-year project: <b>The WatchDog</b>, an IoT helmet streaming six-sensor environmental data
+                (temperature, humidity, air quality, pressure) over Wi-Fi to a Firebase real-time database,
+                visualized on a Node.js web dashboard (Arduino, NodeMCU, multi-master/multi-slave I2C).
+              </p>
+              <p className="rs-desc">
+                Pre-final-year competition project: <b>Smart Glass</b>, a Bluetooth-connected wearable HMD for
+                hands-free notification display (Arduino, OLED, Bluetooth HC05).
+              </p>
             </div>
 
           </article>
